@@ -198,8 +198,12 @@ class Api {
      return $this->applicationKey.time().rand();
    }
 
-   private function _createSignature() {
-       return "A";
+   private function _createSignature($method, $url, $timestamp) {
+
+       $string = $this->applicationSecret."+".$this->accessToken."+".$method."+".$url."+".$timestamp;
+
+       $signature = "$1$".sha1($string);
+       return $signature;
    }
 
 
@@ -231,23 +235,26 @@ class Api {
     {
 
 
+        $url =  $this->endPoint.$path;
+
+        $content["oauth_timestamp"] = time() - $this->delta;
+
+        $content["oauth_signature"] = $this->_createSignature("GET", $url, $content["oauth_timestamp"] );
+
 
        /* return $this->decodeResponse(
             $this->rawCall("GET", $path, $content, true, $headers)
         );*/
        $content["oauth_nonce"] = $this->_createUniqId();
-       $content["oauth_signature"] = $this->_createSignature();
+
        $content["oauth_timestamp"] = time() - $this->delta;
        $content["oauth_token"] = $this->accessToken;
 
 
-       $url =  $this->endPoint.$path;
+        if($content) {
+            $url .="?".http_build_query($content);
+        }
 
-
-
-       if($content) {
-           $url .="?".http_build_query($content);
-       }
 
         // Get cURL resource
         $curl = curl_init();
@@ -280,6 +287,14 @@ class Api {
      **/
     private function post($path, $content = null, $headers = null)
     {
+
+
+        $content["oauth_nonce"] = $this->_createUniqId();
+
+        $content["oauth_timestamp"] = time() - $this->delta;
+        $content["oauth_token"] = $this->accessToken;
+
+        $content["oauth_signature"] = $this->_createSignature("POST", $this->endPoint.$path, $content["oauth_timestamp"] );
 
 
         // Get cURL resource
@@ -322,6 +337,8 @@ class Api {
         echo"</pre> <br />";
 
     }
+
+
 
 
 
