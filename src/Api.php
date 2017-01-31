@@ -61,7 +61,7 @@ class Api {
   private $endPoints = [
     'development' => 'https://sandbox-ws.yper.org/',
     'beta'        => 'https://ws.beta.yper.org/v1.0/',
-    'production'  => ''
+    'production'  => 'https://ws.yper.fr/v1.0/'
   ];
 
   private $endPoint = null;
@@ -107,16 +107,10 @@ class Api {
 
 
        if(empty($this->accessToken) || $this->expiresAt < (time() -1)) {
-
-           echo "ENVOI DE LA DEMANDE D'ACCES.... <br /> <br /> ";
-           try{
+           try {
                $this->oAuth();
-
            } catch (Exception $e) {
-
                throw new Exception($e->getMessage());
-
-
            }
        }
 
@@ -124,13 +118,9 @@ class Api {
        $returnHour = $this->get('time');
        $unixTimestamp = $returnHour['unix'];
 
-
        $time = time();
 
-
        $this->delta = $time - $unixTimestamp;
-
-
    }
 
    private function oAuth() {
@@ -152,27 +142,20 @@ class Api {
            throw new Exception($e->getMessage());
        }
 
-       if(!$return) {
+       if (!$return) {
            throw new \Exception("Authentification Failed");
        }
 
-       if($return) {
-
-
+       if ($return) {
            $this->accessToken = $return['result']['accessToken'];
            $expiresIn = $return['result']['expiresIn'];
            $this->expiresAt = time()+$expiresIn;
            $this->scope = $return['result']['expiresIn'];
-
-           echo "DEMANDE D'ACCES RECUE, EXPIRE LE ".date("d/m/Y H:i:s", $this->expiresAt) ."<br /> <br /> ";
-
        }
 
    }
 
    public function getRetailPointAvailability() {
-
-       echo " RECHERCHE DE LA DISPONIBILITE DU SERVICE POUR UNE ADRESSE ... <br /> <br />";
        $content['oauth_token'] = $this->accessToken;
 
        $return = $this->get("retailpoint/availability/", $content );
@@ -180,10 +163,7 @@ class Api {
        if($return !== false) {
            echo "DISPONIBILITE OK ! <br /> <br />";
        }
-
-
    }
-
 
    /**
    *  Test if curl is exist on environment
@@ -239,7 +219,7 @@ class Api {
 
         $content["oauth_timestamp"] = time() - $this->delta;
 
-        $content["oauth_signature"] = $this->_createSignature("GET", $url, $content["oauth_timestamp"] );
+        $content["oauth_signature"] = $this->_createSignature("GET", $url, $content["oauth_timestamp"]);
 
 
        /* return $this->decodeResponse(
@@ -255,19 +235,19 @@ class Api {
             $url .="?".http_build_query($content);
         }
 
-
         // Get cURL resource
         $curl = curl_init();
+
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $url
         ));
+
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-
-
         $resp = $this->decodeResponse($resp);
+
         // Close request to clear up some resources
         curl_close($curl);
 
@@ -287,18 +267,14 @@ class Api {
      **/
     private function post($path, $content = null, $headers = null)
     {
-
-
         $content["oauth_nonce"] = $this->_createUniqId();
-
         $content["oauth_timestamp"] = time() - $this->delta;
         $content["oauth_token"] = $this->accessToken;
-
         $content["oauth_signature"] = $this->_createSignature("POST", $this->endPoint.$path, $content["oauth_timestamp"] );
-
 
         // Get cURL resource
         $curl = curl_init();
+
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
@@ -312,7 +288,6 @@ class Api {
 
         // Close request to clear up some resources
         curl_close($curl);
-
 
         if(!$resp) {
             return false;
@@ -330,20 +305,10 @@ class Api {
 
 
     public function debug($var) {
-
-
         echo"<pre>";
         var_dump($var);
         echo"</pre> <br />";
-
     }
-
-
-
-
-
-
-
 }
 
- ?>
+?>
