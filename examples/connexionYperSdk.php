@@ -10,28 +10,22 @@
 <body>
 
 <?php
-
-
 require_once"../src/Api.php";
 require_once "../src/Exceptions/InvalidParameterException.php";
 use YperSdk\Api;
 use YperSdk\Exceptions;
 
-
 // Informations about your application
-$applicationKey = $applicationSecret = "***REMOVED***";
+$applicationKey = "APPLICATION_KEY";
+$applicationSecret = "APPLICATION_SECRET";
 
 try {
-
-    //Instancier Yper
+    // Instancier Yper
     $objetYper = new Api($applicationKey, $applicationSecret, 'beta');
 
     $objetYper->getRetailPointAvailability();
-
 } catch(Exception $e) {
-
-     echo "Une Erreur est survenue !! : ".$e->getMessage();
-
+     echo "Une Erreur est survenue !! : " . $e->getMessage();
 }
 
 ?>
