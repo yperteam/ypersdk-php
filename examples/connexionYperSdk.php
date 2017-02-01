@@ -11,14 +11,13 @@
 
 <?php
 require_once"../src/Api.php";
-require_once "../src/Exceptions/InvalidParameterException.php";
+
 use YperSdk\Api;
-use YperSdk\Exceptions;
 
 // Informations about your application
-$applicationKey = "app1";
-$applicationSecret = "app1";
-$retailPointPId = "aa";
+$applicationKey = "APPLICATION_KEY";
+$applicationSecret = "APPLICATION_SECRET";
+$retailPointPId = "retailPointPid";
 
 try {
     // Instancier Yper
