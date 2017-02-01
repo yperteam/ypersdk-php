@@ -3,8 +3,50 @@
 Ce connecteur vous permet de vous connecter de façon simple et sécurisée à l'API Yper.
 Tous les retours sont les bienvenus.
 
-# Example
+Ce dépôt sera régulièrement mis-à-jour et enrichis avec les différents ajouts.
 
-Code example :
+Pour cloner le dépôt : 
+```
+git clone git@github.com:yperteam/ypersdk-php.git
+```
 
-[Here !](https://github.com/yperteam/ypersdk-php/blob/master/examples/connexionYperSdk.php)
+Le SDK fourni les méthodes suivantes : 
+- `getRetailPointAvailabilityFromAddress(string $address, string $retailPointId)`
+- `getRetailPointAvailabilityFromCoordinates($latitude, $longitude, string $retailPointId)`
+
+Pour accéder à l'API, vous devez vous munir des identifiants que nous vous avons fourni : 
+- `$applicationKey`
+- `$applicationSecret` 
+
+Exemple d'utilisation de l'API
+```
+<?php
+
+require_once"../src/Api.php";
+use YperSdk\Api;
+
+// Informations about your application
+$applicationKey = "APPLICATION_KEY";
+$applicationSecret = "APPLICATION_SECRET";
+$retailPointPId = "retailPointPid";
+
+try {
+    // Instancier Yper
+    $objetYper = new Api($applicationKey, $applicationSecret, 'beta');
+    
+    //Return bool(true)
+    var_dump($objetYper->getRetailPointAvailabilityFromAddress("3 square de l'ermitage, 59800 Lille", $retailPointPId));
+    var_dump($objetYper->getRetailPointAvailabilityFromCoordinates("50.650549","3.082126", $retailPointPId));
+    
+    //Return bool(false)
+    var_dump($objetYper->getRetailPointAvailabilityFromAddress("24bis Rue Basse Mouillère, 45100 Orléans, France", $retailPointPId));
+    
+    var_dump($objetYper->getRetailPointAvailabilityFromCoordinates("47.84265762816538","2.0654296875",$retailPointPId));
+    
+} catch(Exception $e) {
+     echo "Une Erreur est survenue !! : " . $e->getMessage();
+}
+?>
+```
+
+[Exemple complet ici](https://github.com/yperteam/ypersdk-php/blob/master/examples/connexionYperSdk.php)
