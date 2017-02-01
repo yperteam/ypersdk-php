@@ -16,14 +16,25 @@ use YperSdk\Api;
 use YperSdk\Exceptions;
 
 // Informations about your application
-$applicationKey = "APPLICATION_KEY";
-$applicationSecret = "APPLICATION_SECRET";
+$applicationKey = "app1";
+$applicationSecret = "app1";
+$retailPointPId = "aa";
 
 try {
     // Instancier Yper
     $objetYper = new Api($applicationKey, $applicationSecret, 'beta');
 
-    $objetYper->getRetailPointAvailability();
+
+    //Return bool(true)
+    var_dump($objetYper->getRetailPointAvailabilityFromAddress("3 square de l'ermitage, 59800 Lille", $retailPointPId));
+    var_dump($objetYper->getRetailPointAvailabilityFromCoordinates("50.650549","3.082126", $retailPointPId));
+
+
+    //Return bool(false)
+    var_dump($objetYper->getRetailPointAvailabilityFromAddress("24bis Rue Basse Mouillère, 45100 Orléans, France", $retailPointPId));
+    var_dump($objetYper->getRetailPointAvailabilityFromCoordinates("47.84265762816538","2.0654296875",$retailPointPId));
+
+
 } catch(Exception $e) {
      echo "Une Erreur est survenue !! : " . $e->getMessage();
 }
