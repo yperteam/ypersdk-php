@@ -1,0 +1,27 @@
+{
+  "name": "yper/yperapi-sdk-php",
+  "type": "library",
+  "description": "PHP SDK for yperapi",
+  "keywords": ["yper","php","yperapi"],
+  "homepage": "https://github.com/yperteam/ypersdk-php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "YPER SAS",
+      "email": "contact@yper.fr",
+      "homepage": "https://www.yper.fr",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Yper\\SDK": "src"
+    },
+    "psr-0": {
+      "Yper\\SDK": "src"
+    }
+  }
+}
