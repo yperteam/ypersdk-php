@@ -12,7 +12,7 @@
 <?php
 require_once"../src/Api.php";
 
-use YperSdk\Api;
+use Yper\SDK\Api;
 
 // Informations about your application
 $applicationKey = "APPLICATION_KEY";

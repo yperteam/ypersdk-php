@@ -1,11 +1,12 @@
 <?php
 # Copyright (c) 2013-2017, Yper.
 # All rights reserved.
+
 /**
- * This file contains code about \ypersdk\Api class
+ * This file contains code about \Yper\SDK\Api class
  */
 
-namespace YperSdk;
+namespace Yper\SDK;
 use Exception;
 
 
@@ -323,7 +324,6 @@ class Api {
 
         $resp =  $this->decodeResponse($resp);
 
-        //$this->debug($resp);
         if($resp['status'] != "200") {
             throw new Exception($resp["errorCode"]." => ".$resp["errorMessage"]);
         }
@@ -346,7 +346,6 @@ class Api {
         }
 
         $this->lastTry = time();
-
 
         $content['app_id'] = $this->applicationKey;
         $content['app_secret'] = $this->applicationSecret;

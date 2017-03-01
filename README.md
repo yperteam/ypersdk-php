@@ -1,5 +1,23 @@
 # ypersdk
 
+## Install
+
+### With composer
+
+Install the latest version with :
+
+```
+$ composer require yper/yperapi-sdk-php
+```
+
+### With sources
+
+```
+// TODO
+```
+
+## Usage
+
 Ce connecteur vous permet de vous connecter de façon simple et sécurisée à l'API Yper.
 Tous les retours sont les bienvenus.
 
@@ -7,7 +25,7 @@ Ce dépôt sera régulièrement mis-à-jour et enrichis avec les différents ajo
 
 Pour cloner le dépôt : 
 ```
-git clone git@github.com:yperteam/ypersdk-php.git
+$ git clone git@github.com:yperteam/ypersdk-php.git
 ```
 
 Le SDK fourni les méthodes suivantes : 
@@ -23,7 +41,7 @@ Exemple d'utilisation de l'API
 <?php
 
 require_once"../src/Api.php";
-use YperSdk\Api;
+use Yper\SDK\Api;
 
 // Informations about your application
 $applicationKey = "APPLICATION_KEY";
