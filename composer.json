@@ -19,10 +19,10 @@
   },
   "autoload": {
     "psr-4": {
-      "Yper\\SDK\\": "src"
+      "Yper\\SDK\\": "src/"
     },
     "psr-0": {
-      "Yper\\SDK\\": "src"
+      "Yper\\SDK\\": "src/"
     }
   }
 }
