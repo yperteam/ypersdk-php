@@ -73,8 +73,6 @@ class Api {
      *
      * @param string $applicationSecret secret of your application.
      *
-     *
-     * @throws Exceptions\InvalidParameterException if one parameter is missing or with bad value
      */
     public function __construct(
         $applicationKey,
@@ -83,15 +81,15 @@ class Api {
     ) {
 
         if( !$this->_hasCurl()) {
-            throw new Exceptions\ApiException("YperSDK need to have curl loaded to work");
+            throw new Exception("YperSDK need to have curl loaded to work");
         }
 
         if (!isset($applicationKey) || empty($applicationKey)) {
-            throw new Exceptions\InvalidParameterException("Application key parameter is empty");
+            throw new Exception("Application key parameter is empty");
         }
 
         if (!isset($applicationSecret) || empty($applicationKey)) {
-            throw new Exceptions\InvalidParameterException("Application secret parameter is empty");
+            throw new Exception("Application secret parameter is empty");
         }
 
         if(!isset($endPoint) || empty($endPoint)) {
