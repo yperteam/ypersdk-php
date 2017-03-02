@@ -2,7 +2,7 @@
 
 ## Install
 
-### With composer
+### With composer (fastest)
 
 Install the latest version with :
 
@@ -12,13 +12,31 @@ $ composer require yper/yperapi-sdk-php
 
 In your code, include composer autoload :
 
+```php
+<?php
+
+require "vendor/autoload.php";
+```
+
+
 ### With sources
 
+Download the release you want from :
+
+https://github.com/yperteam/ypersdk-php/releases
+
+Copy the files to your project directory and include the following classes :
+
 ```
-// TODO
+require_once("<Your Path>/src/Api.php");
+require_once("<Your Path>/src/RetailPoint.php");
+require_once("<Your Path>/src/DeliveryOffer.php");
 ```
 
-## Usage
+## Usage (Deprecated)
+
+**This usage is currently deprecated with the latest version of the API. You can check a complete example here : https://github.com/yperteam/ypersdk-php/blob/master/examples/basic.php**
+
 
 Ce connecteur vous permet de vous connecter de façon simple et sécurisée à l'API Yper.
 Tous les retours sont les bienvenus.
