@@ -10,6 +10,8 @@ Install the latest version with :
 $ composer require yper/yperapi-sdk-php
 ```
 
+In your code, include composer autoload :
+
 ### With sources
 
 ```
@@ -67,4 +69,4 @@ try {
 ?>
 ```
 
-[Exemple complet ici](https://github.com/yperteam/ypersdk-php/blob/master/examples/connexionYperSdk.php)
+[Exemple complet ici](https://github.com/yperteam/ypersdk-php/blob/master/examples/basic.php)

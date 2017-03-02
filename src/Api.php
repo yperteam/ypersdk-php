@@ -9,7 +9,6 @@
 namespace Yper\SDK;
 use Exception;
 
-
 class Api {
 
     /**
@@ -60,7 +59,7 @@ class Api {
 
 
     private $endPoints = [
-        'development' => 'https://sandbox-ws.yper.org/',
+        'development' => 'http://localhost:8080/',
         'beta'        => 'https://ws.beta.yper.org/v1.0/',
         'production'  => 'https://ws.yper.fr/v1.0/'
     ];
@@ -83,7 +82,7 @@ class Api {
         $endPoint
     ) {
 
-        if( !$this->_isCurl()) {
+        if( !$this->_hasCurl()) {
             throw new Exceptions\ApiException("YperSDK need to have curl loaded to work");
         }
 
@@ -104,74 +103,19 @@ class Api {
         $this->applicationSecret = $applicationSecret;
         $this->endPoint          = $this->endPoints[$endPoint];
 
-
-        if(empty($this->accessToken) || $this->expiresAt < (time() -1)) {
+        if(empty($this->accessToken) || $this->expiresAt < (time() - 1)) {
             try {
-                $this->oAuth();
+                $this->_getOAuthToken();
             } catch (Exception $e) {
                 throw new Exception($e->getMessage());
             }
         }
 
-
-        $returnHour = $this->get('time');
+        // Fetching server time and calculating delta
+        $returnHour    = $this->get('time');
         $unixTimestamp = $returnHour['unix'];
-
-        $time = time();
-
-        $this->delta = $time - $unixTimestamp;
-    }
-
-
-
-    /**
-     * get retail point availability with an address
-     * @param $address string
-     * @param $retailPointPid
-     * @param null $dateFrom
-     */
-    public function getRetailPointAvailabilityFromAddress($address, $retailPointPid, $dateFrom = null) {
-
-        if(!$address || !$retailPointPid) {
-            throw new Exception("Latitude, longitude or retailPointPid not defined");
-        }
-        $content['address'] = $address;
-        $content['retailpoint_pid'] = $retailPointPid;
-        $content['date_from'] = $dateFrom;
-
-
-        return $this->getRetailPointAvailability($content);
-    }
-
-
-    /**
-     * get retail point availability with coordinates GPS
-     * @param $latitude
-     * @param $longitude
-     * @param $retailPointPid
-     * @param null $dateFrom
-     * @return mixed
-     */
-    public function getRetailPointAvailabilityFromCoordinates($latitude, $longitude, $retailPointPid, $dateFrom = null) {
-
-        if(!$latitude || !$longitude || !$retailPointPid) {
-            throw new Exception("Latitude, longitude or retailPointPid not defined");
-        }
-        $content['lat'] = $latitude;
-        $content['lng'] = $longitude;
-        $content['date_from'] = $dateFrom;
-        $content['retailpoint_pid'] = $retailPointPid;
-
-
-        return $this->getRetailPointAvailability($content);
-    }
-
-
-
-
-    private function getRetailPointAvailability($content) {
-        $return = $this->get("retailpoint/availability/", $content );
-        return $return['available'];
+        $time          = time();
+        $this->delta   = $time - $unixTimestamp;
     }
 
     /**
@@ -179,7 +123,7 @@ class Api {
      *  return boolean
      *
      **/
-    private function _isCurl(){
+    private function _hasCurl(){
         return function_exists('curl_version');
     }
 
@@ -200,14 +144,11 @@ class Api {
      *
      */
     private function _createSignature($method, $url, $timestamp) {
-
         $string = $this->applicationSecret."+".$this->accessToken."+".$method."+".$url."+".$timestamp;
 
         $signature = "$1$".sha1($string);
         return $signature;
     }
-
-
 
     /**
      * Decode a Response object body to an Array
@@ -216,22 +157,20 @@ class Api {
      *
      * @return array
      */
-    private function decodeResponse($response)
-    {
+    private function _decodeResponse($response) {
         return json_decode($response, true);
     }
 
     /**
      * GET requests
      *
-     * @param string $path    path ask inside api
-     * @param array  $content content to send inside body of request
-     *
+     * @param string $path path ask inside api
+     * @param array $content content to send inside body of request
+     * @param null $headers
      * @return array
+     * @throws Exception
      */
-
-    private function get($path, $content = null, $headers = null)
-    {
+    public function get($path, $content = null, $headers = null) {
 
         if(!$content) {
             $content = [];
@@ -240,28 +179,18 @@ class Api {
         $url =  $this->endPoint.$path;
 
         $content["oauth_timestamp"] = time() - $this->delta;
-
         $content["oauth_signature"] = $this->_createSignature("GET", $url, $content["oauth_timestamp"]);
+        $content["oauth_nonce"]     = $this->_createUniqId();
+        $content["oauth_token"]     = $this->accessToken;
 
-
-        /* return $this->decodeResponse(
-             $this->rawCall("GET", $path, $content, true, $headers)
-         );*/
-        $content["oauth_nonce"] = $this->_createUniqId();
-
-        $content["oauth_timestamp"] = time() - $this->delta;
-        $content["oauth_token"] = $this->accessToken;
-
-
-        if($content) {
-            $url .="?".http_build_query($content);
+        if ($content) {
+            $url .= "?" . http_build_query($content);
         }
 
-
-        // Get cURL resource
+        // Get cURL ressource
         $curl = curl_init();
 
-        // Set some options - we are passing in a useragent too here
+        // Setting curl options
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $url
@@ -269,7 +198,7 @@ class Api {
 
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        $resp = $this->decodeResponse($resp);
+        $resp = $this->_decodeResponse($resp);
 
         // Close request to clear up some resources
         curl_close($curl);
@@ -280,25 +209,21 @@ class Api {
         }
 
         throw new Exception( $resp["errorCode"]." ".$resp["errorMessage"]);
-
-
-
     }
 
 
     /**
      * POST requests
      *
-     * @param string $path    path ask inside api
-     * @param array  $content content to send inside body of request
-     *
+     * @param string $path path ask inside api
+     * @param array $content content to send inside body of request
      * @return array
-     **/
-    private function post($path, $content = null)
-    {
-        $content["oauth_nonce"] = $this->_createUniqId();
+     * @throws Exception
+     */
+    public function post($path, $content = null) {
+        $content["oauth_nonce"]     = $this->_createUniqId();
         $content["oauth_timestamp"] = time() - $this->delta;
-        $content["oauth_token"] = $this->accessToken;
+        $content["oauth_token"]     = $this->accessToken;
         $content["oauth_signature"] = $this->_createSignature("POST", $this->endPoint.$path, $content["oauth_timestamp"] );
 
         // Get cURL resource
@@ -322,7 +247,7 @@ class Api {
             return false;
         }
 
-        $resp =  $this->decodeResponse($resp);
+        $resp =  $this->_decodeResponse($resp);
 
         if($resp['status'] != "200") {
             throw new Exception($resp["errorCode"]." => ".$resp["errorMessage"]);
@@ -332,16 +257,15 @@ class Api {
 
     }
 
-
     /**
-     * Authentification, get token
+     * Authentication, get token
      *
      * @return bool
      * @throws Exception
      */
-    private function oAuth() {
+    private function _getOAuthToken() {
 
-        if($this->lastTry >  (time() - 5)) {
+        if($this->lastTry > (time() - 5)) {
             return false;
         }
 
@@ -358,7 +282,7 @@ class Api {
         }
 
         if (!$return) {
-            throw new \Exception("Authentification Failed");
+            throw new \Exception("Authentication Failed");
         }
 
         if ($return) {
