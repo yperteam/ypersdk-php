@@ -34,7 +34,7 @@ namespace Yper\SDK\Service {
                 $content['dateEnd'] = $dateEnd;
             }
 
-            $return = $this->get("offer", $content);
+            $return = $this->get("offers", $content);
 
             return $return;
         }

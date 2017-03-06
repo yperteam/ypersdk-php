@@ -21,7 +21,7 @@ namespace Yper\SDK\Service {
         }
 
         private function _getRetailPointAvailability($content) {
-            $return = $this->get("retailpoint/availability/", $content);
+            $return = $this->get("retailpoints/availability/", $content);
             return $return['available'];
         }
 
