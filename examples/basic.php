@@ -8,18 +8,19 @@ use Yper\SDK\Api;
 use Yper\SDK\Service;
 
 // Informations about your application
-$applicationKey = "***REMOVED***";
-$applicationSecret = "***REMOVED***";
-$retailPointPId = "99015085903";
+$applicationKey = "APP_ID";
+$applicationSecret = "APP_SECRET";
+$retailPointPId = "RETAILPOINT_PARTNER_ID";
 
 try {
     // Instanciate API
-    $api = new Api($applicationKey, $applicationSecret, 'development');
+    $api = new Api($applicationKey, $applicationSecret, 'production');
 
     // Instanciate retailPointService
     $retailPointService = new Service\RetailPoint($api);
 
-    var_dump($retailPointService->getRetailPointAvailabilityFromAddress("3 square de l'ermitage, 59800 Lille", $retailPointPId));
+    var_dump($retailPointService->getRetailPointAvailabilityFromAddress("Mouscron", $retailPointPId));
+
     var_dump($retailPointService->getRetailPointAvailabilityFromCoordinates("50.650549","3.082126", $retailPointPId));
 
     // Instanciate deliveryOffer service
