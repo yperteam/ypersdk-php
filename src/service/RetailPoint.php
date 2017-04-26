@@ -29,16 +29,14 @@ namespace Yper\SDK\Service {
          * get retail point availability with an address
          * @param $address string
          * @param $retailPointPid
-         * @param null $dateFrom
          */
-        public function getRetailPointAvailabilityFromAddress($address, $retailPointPid, $dateFrom = null) {
+        public function getRetailPointAvailabilityFromAddress($address, $retailPointPid) {
 
             if(!$address || !$retailPointPid) {
                 throw new Exception("Latitude, longitude or retailPointPid not defined");
             }
             $content['address'] = $address;
             $content['retailpoint_pid'] = $retailPointPid;
-            $content['date_from'] = $dateFrom;
 
             return $this->_getRetailPointAvailability($content);
         }
@@ -49,17 +47,15 @@ namespace Yper\SDK\Service {
          * @param $latitude
          * @param $longitude
          * @param $retailPointPid
-         * @param null $dateFrom
          * @return mixed
          */
-        public function getRetailPointAvailabilityFromCoordinates($latitude, $longitude, $retailPointPid, $dateFrom = null) {
+        public function getRetailPointAvailabilityFromCoordinates($latitude, $longitude, $retailPointPid) {
 
             if(!$latitude || !$longitude || !$retailPointPid) {
                 throw new Exception("Latitude, longitude or retailPointPid not defined");
             }
             $content['lat'] = $latitude;
             $content['lng'] = $longitude;
-            $content['date_from'] = $dateFrom;
             $content['retailpoint_pid'] = $retailPointPid;
 
 
