@@ -2,9 +2,6 @@
 # Copyright (c) 2013-2017, Yper.
 # All rights reserved.
 
-/**
- * This file contains code about \Yper\SDK\Offer class
- */
 
 namespace Yper\SDK\Service;
 
