@@ -2,10 +2,6 @@
 # Copyright (c) 2013-2017, Yper.
 # All rights reserved.
 
-/**
- * This file contains code about \Yper\SDK\Api class
- */
-
 namespace Yper\SDK;
 use Exception;
 
