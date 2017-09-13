@@ -57,7 +57,7 @@ class Api {
     private $endPoints = [
         'development' => 'http://localhost:8080/',
         'beta'        => 'https://ws.beta.yper.org/v1.0/',
-        'production'  => 'https://ws.yper.fr/v1.0/'
+        'production'  => 'https://api.yper.io/v1.0/'
     ];
 
     private $endPoint = null;
@@ -65,19 +65,21 @@ class Api {
     /**
      * Construct a new wrapper instance
      *
-     * @param string $applicationKey    key of your application.
+     * @param string $applicationKey key of your application.
      *
      * @param string $applicationSecret secret of your application.
-     *
+     * @param string $endPoint
+     * @throws Exception
      */
     public function __construct(
         $applicationKey,
         $applicationSecret,
-        $endPoint
+        $scope = ['global'],
+        $endPoint = 'production'
     ) {
 
-        if( !$this->_hasCurl()) {
-            throw new Exception("YperSDK need to have curl loaded to work");
+        if (!$this->_hasCurl()) {
+            throw new Exception("YperSDK need to have curl extension loaded to work");
         }
 
         if (!isset($applicationKey) || empty($applicationKey)) {
@@ -88,16 +90,16 @@ class Api {
             throw new Exception("Application secret parameter is empty");
         }
 
-        if(!isset($endPoint) || empty($endPoint)) {
+        if (!isset($endPoint) || empty($endPoint)) {
             $endPoint = 'development';
         }
 
-
         $this->applicationKey    = $applicationKey;
         $this->applicationSecret = $applicationSecret;
+        $this->scope             = $scope;
         $this->endPoint          = $this->endPoints[$endPoint];
 
-        if(empty($this->accessToken) || $this->expiresAt < (time() - 1)) {
+        if (empty($this->accessToken) || $this->expiresAt < (time() - 1)) {
             try {
                 $this->_getOAuthToken();
             } catch (Exception $e) {
@@ -139,8 +141,8 @@ class Api {
      */
     private function _createSignature($method, $url, $timestamp) {
         $string = $this->applicationSecret."+".$this->accessToken."+".$method."+".$url."+".$timestamp;
-
         $signature = "$1$".sha1($string);
+
         return $signature;
     }
 
@@ -155,6 +157,15 @@ class Api {
         return json_decode($response, true);
     }
 
+    private function _add_oauth_data($content, $method, $url) {
+        $content["oauth_timestamp"]    = time() - $this->delta;
+        $content["oauth_signature"]    = $this->_createSignature("GET", $url, $content["oauth_timestamp"]);
+        $content["oauth_nonce"]        = $this->_createUniqId();
+        $content["oauth_access_token"] = $this->accessToken;
+
+        return $content;
+    }
+
     /**
      * GET requests
      *
@@ -166,16 +177,13 @@ class Api {
      */
     public function get($path, $content = null, $headers = null) {
 
-        if(!$content) {
+        if (!$content) {
             $content = [];
         }
 
-        $url =  $this->endPoint.$path;
+        $url =  $this->endPoint . $path;
 
-        $content["oauth_timestamp"] = time() - $this->delta;
-        $content["oauth_signature"] = $this->_createSignature("GET", $url, $content["oauth_timestamp"]);
-        $content["oauth_nonce"]     = $this->_createUniqId();
-        $content["oauth_token"]     = $this->accessToken;
+        $content = $this->_add_oauth_data($content, "POST", $url);
 
         if ($content) {
             $url .= "?" . http_build_query($content);
@@ -198,7 +206,7 @@ class Api {
         curl_close($curl);
 
         // $this->debug($resp);
-        if(isset($resp['result'])) {
+        if (isset($resp['result'])) {
             return $resp['result'];
         }
 
@@ -215,10 +223,10 @@ class Api {
      * @throws Exception
      */
     public function post($path, $content = null) {
-        $content["oauth_nonce"]     = $this->_createUniqId();
-        $content["oauth_timestamp"] = time() - $this->delta;
-        $content["oauth_token"]     = $this->accessToken;
-        $content["oauth_signature"] = $this->_createSignature("POST", $this->endPoint.$path, $content["oauth_timestamp"] );
+
+        $url = $this->endPoint . $path;
+
+        $content = $this->_add_oauth_data($content, "POST", $url);
 
         // Get cURL resource
         $curl = curl_init();
@@ -226,29 +234,29 @@ class Api {
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $this->endPoint.$path,
+            CURLOPT_URL => $url,
+            CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
             CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $content
+            CURLOPT_POSTFIELDS => json_encode($content)
         ));
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($content));
+
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
 
         // Close request to clear up some resources
         curl_close($curl);
 
-        if(!$resp) {
+        if (!$resp) {
             return false;
         }
 
         $resp =  $this->_decodeResponse($resp);
 
-        if($resp['status'] != "200") {
-            throw new Exception($resp["errorCode"]." => ".$resp["errorMessage"]);
+        if ($resp['status'] != "200") {
+            throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
         }
 
         return $resp;
-
     }
 
     /**
@@ -257,9 +265,9 @@ class Api {
      * @return bool
      * @throws Exception
      */
-    private function _getOAuthToken() {
+    private function  _getOAuthToken() {
 
-        if($this->lastTry > (time() - 5)) {
+        if ($this->lastTry > (time() - 5)) {
             return false;
         }
 
@@ -268,6 +276,7 @@ class Api {
         $content['app_id'] = $this->applicationKey;
         $content['app_secret'] = $this->applicationSecret;
         $content['grant_type'] = $this->grantType;
+        $content['scope'] = $this->scope;
 
         try {
             $return = $this->post("oauth/token", $content);
@@ -279,13 +288,9 @@ class Api {
             throw new \Exception("Authentication Failed");
         }
 
-        if ($return) {
-            $this->accessToken = $return['result']['accessToken'];
-            $expiresIn = $return['result']['expiresIn'];
-            $this->expiresAt = time()+$expiresIn;
-            $this->scope = $return['result']['expiresIn'];
-        }
-
+        $this->accessToken = $return['result']['access_token'];
+        $expiresIn = $return['result']['expires_in'];
+        $this->expiresAt = time() + $expiresIn;
     }
 
 }

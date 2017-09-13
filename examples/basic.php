@@ -14,7 +14,7 @@ $retailPointPId = "RETAILPOINT_PARTNER_ID";
 
 try {
     // Instanciate API
-    $api = new Api($applicationKey, $applicationSecret, 'production');
+    $api = new Api($applicationKey, $applicationSecret, [],'development');
 
     // Instanciate retailPointService
     $retailPointService = new Service\RetailPoint($api);
