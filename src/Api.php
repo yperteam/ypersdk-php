@@ -53,10 +53,9 @@ class Api {
 
     private $lastTry = 0;
 
-
     private $endPoints = [
         'development' => 'http://localhost:8080/',
-        'beta'        => 'https://ws.beta.yper.org/v1.0/',
+        'beta'        => 'https://io.beta.yper.org/v1.0/',
         'production'  => 'https://api.yper.io/v1.0/'
     ];
 
@@ -103,7 +102,7 @@ class Api {
             try {
                 $this->_getOAuthToken();
             } catch (Exception $e) {
-                throw new Exception($e->getMessage());
+                throw $e;
             }
         }
 
