@@ -19,18 +19,19 @@ namespace Yper\SDK\Service {
         /**
          * book a mission from a pro account
          */
-        public function getBookingURL($options = []) {
+        public function getBookingURL($params = []) {
 
-            $params = \Yper\SDK\Helper\Validation::validateParams($options, [
+//            $params = \Yper\SDK\Helper\Validation::validateParams($options, [
+//
+//            ]);
 
-            ]);
+            $return = $this->post("mission/prebook", $params);
 
-            // TODO : Return dynamic URL here
-            return [
-                "missionId" => "abcdefgh",
-                "bookingURL" => "https://app.yper.fr",
-                "expiresAt" => "2017-11-14T09:09:58.045Z"
-            ];
+            if (isset($return['status']) && $return['status'] == 200 && isset($return['result'])) {
+                return $return;
+            } else {
+                throw new \Exception('Invalid response from prebooking service');
+            }
         }
 
     }

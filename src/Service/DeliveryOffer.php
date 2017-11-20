@@ -16,6 +16,7 @@ namespace Yper\SDK\Service {
             parent::__construct($api);
         }
 
+        // TODO : Old stuff : To Refactor
         public function getOffers($lat, $lng, $dateStart = null, $dateEnd = null) {
 
             $content = [];

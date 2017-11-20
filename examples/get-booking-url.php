@@ -4,8 +4,8 @@ require_once "../src/Api.php";
 require_once "../src/service/Mission.php";
 
 // Informations about your application
-$applicationKey = "YOUR_APP_ID";
-$applicationSecret = "YOUR_APP_SECRET";
+$applicationKey = "YOUR_APPLICATION_KEY";
+$applicationSecret = "YOUR_APPLICATION_SECRET";
 
 try {
     // Instanciate API
@@ -15,21 +15,28 @@ try {
     $missionService = new Yper\SDK\Service\Mission($api);
 
     print_r($missionService->getBookingURL([
-        "order" => [
-            "orderId" => "100249275",
-            "when" => "2017-10-11T13:30:00",
-            "nbItems" => 1,
-            "price" => 1.19
+        "delivery_address" => [
+            "formatted_address" => "121 rue chanzy, 59260 Lille, France",
+            "additional_number" => null, // BIS|TER
+            "additinal" => "Comment about the address",
         ],
-        "customer" => [
+        "receiver" => [
             "firstname" => "John",
             "lastname" => "Doe",
-            "phone" => "0600000000",
-            "address" => "121 rue Chanzy, 59260 Lille-Hellemmes"
+            "phone" => "+33612345678",
+            "email" => "support@yper.fr"
         ],
-        "retailPoint" => [
-            "internalId" => "00523"
-        ]
+        "retailpoint" => [
+            "partner_id" => "00576"
+        ],
+        "delivery_start" => "2018-01-28 16:00:00.000Z",
+        "delivery_end" => "2018-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
+        "order" => [
+            "order_id" => "123456",
+            "options" => ['climb'],
+            "size" => "L",
+        ],
+        "comment" => "Comment displayed to the shopper"
     ]));
 
 } catch(Exception $e) {

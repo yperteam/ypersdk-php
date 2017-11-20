@@ -8,6 +8,7 @@ namespace {
 
 namespace Yper\SDK\Service {
 
+    // TODO : Old stuff : To Refactor
     class RetailPoint extends AbstractService {
 
         public function __construct(
