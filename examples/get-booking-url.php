@@ -39,6 +39,24 @@ try {
         "comment" => "Comment displayed to the shopper"
     ]));
 
+//  Returns :
+//
+//    Array
+//    (
+//        [status] => 200
+//        [result] => Array
+//        (
+//            [confirm_url] => Array
+//            (
+//                [webapp] => https://app.beta.yper.org/#/book/mMBx9P6ngjGq7FdH2
+//                    )
+//
+//                [expires_at] => 2017-11-20T15:55:11.192Z
+//            )
+//
+//    )
+
+
 } catch(Exception $e) {
     echo "An error occured : " . $e->getMessage();
 }
