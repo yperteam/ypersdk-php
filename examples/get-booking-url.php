@@ -36,6 +36,10 @@ try {
             "options" => ['climb'],
             "size" => "L",
         ],
+        "extra" => [
+            "nb_items" => 3,
+            "price" => 49.5
+        ],
         "comment" => "Comment displayed to the shopper"
     ]));
 
