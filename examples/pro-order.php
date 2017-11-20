@@ -20,24 +20,32 @@ try {
     $proService = new Service\Pro($api);
 
     print_r($proService->book([
-        "deliveryAddress" => "121 rue chanzy, 59000, Lille, France",
-        "deliveryAddressAdditionalNumber" => null,
-        "deliveryAddressAdditional" => null,
-        "firstname" => "Yper",
-        "lastname" => "Yper",
-        "phone" => "+33972517520",
-        "email" => "support@yper.fr",
-        "proId" => "48259867A7109",
-        "retailPointId" => "59pe159JSK11848fe9ced73b",
-        "when" => "2017-09-18T16:00:00.000Z",
-        "orderId" => "YPER-1",
-        "options" => [
-            "frozen", "fragile", "climb", "heavy", "fresh"
+        "delivery_address" => [
+            "formatted_address" => "121 rue chanzy, 59260 Lille, France",
+            "additional_number" => null, // BIS|TER
+            "additinal" => "Comment about the address",
         ],
-        "size" => "bike",
-        "comment" => "Comment for the shopper"
+        "receiver" => [
+            "firstname" => "John",
+            "lastname" => "Doe",
+            "phone" => "+33612345678",
+            "email" => "support@yper.fr"
+        ],
+        "retailpoint" => [
+            "id" => "59pe159JSK11848fe9ced73b"
+        ],
+        "pro" => [
+            "id" => "48259867A7109",
+        ],
+        "delivery_start" => "2018-01-28 16:00:00.000Z",
+        "delivery_end" => "2018-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
+        "order" => [
+            "order_id" => "123456",
+            "options" => ['climb'],
+            "size" => "L",
+        ],
+        "comment" => "Comment displayed to the shopper"
     ]));
-
 
 } catch(Exception $e) {
     echo "An error occured : " . $e->getMessage();

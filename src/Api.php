@@ -55,10 +55,9 @@ class Api {
 
     private $endPoints = [
         'development' => 'http://localhost:8080/',
-        'beta'        => 'https://io.beta.yper.org/v1.0/',
-        'production'  => 'https://api.yper.io/v1.0/'
+        'beta'        => 'https://io.beta.yper.org/',
+        'production'  => 'https://api.yper.io/'
     ];
-
     private $endPoint = null;
 
     /**
