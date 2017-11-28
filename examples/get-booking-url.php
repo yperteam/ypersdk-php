@@ -16,31 +16,31 @@ try {
 
     print_r($missionService->getBookingURL([
         "delivery_address" => [
-            "formatted_address" => "121 rue chanzy, 59260 Lille, France",
-            "additional_number" => null, // BIS|TER
-            "additinal" => "Comment about the address",
+            "formatted_address" => "121 rue chanzy, 59260 Lille, France", // L'adresse du client en texte
+            "additional_number" => null, // Complément sur le numéro de l'adresse : BIS|TER
+            "additinal" => "Comment about the address", // Commentaire sur l'adresse du client
         ],
         "receiver" => [
-            "firstname" => "John",
-            "lastname" => "Doe",
-            "phone" => "+33612345678",
-            "email" => "support@yper.fr"
+            "firstname" => "John", // Prénom du client
+            "lastname" => "Doe", // Nom du client
+            "phone" => "+33612345678", // Téléphone du client
+            "email" => "support@yper.fr" // Adresse email du client
         ],
         "retailpoint" => [
-            "partner_id" => "00576"
+            "partner_id" => "00576" // Identifiant partenaire du magasin (votre identifint)
         ],
-        "delivery_start" => "2018-01-28 16:00:00.000Z",
+        "delivery_start" => "2018-01-28 16:00:00.000Z", // Heure de début de livraison
         "delivery_end" => "2018-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
         "order" => [
-            "order_id" => "123456",
-            "options" => ['climb'],
-            "size" => "L",
+            "order_id" => "123456", // Numéro de commande
+            "options" => ['climb'], // Options sur la commande
+            "size" => "car", // Taille de la commande
         ],
         "extra" => [
-            "nb_items" => 3,
-            "price" => 49.5
+            "nb_items" => 3, // Nombre d'articles
+            "price" => 49.5 // Prix de la commande (obligatoire pour le FRANCO)
         ],
-        "comment" => "Comment displayed to the shopper"
+        "comment" => "Comment displayed to the shopper" // Commentaire général à propos de la livraison
     ]));
 
 //  Returns :
