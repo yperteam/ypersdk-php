@@ -20,18 +20,8 @@ namespace Yper\SDK\Service {
          * book a mission from a pro account
          */
         public function getBookingURL($params = []) {
-
-//            $params = \Yper\SDK\Helper\Validation::validateParams($options, [
-//
-//            ]);
-
             $return = $this->post("mission/prebook", $params);
-
-            if (isset($return['status']) && $return['status'] == 200 && isset($return['result'])) {
-                return $return;
-            } else {
-                throw new \Exception('Invalid response from prebooking service');
-            }
+            return $return;
         }
 
     }

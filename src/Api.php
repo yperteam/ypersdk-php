@@ -21,12 +21,6 @@ class Api {
      */
     private $applicationSecret = null;
 
-    /**
-     * Grand type of connexion
-     *
-     * @var string
-     */
-    private $grantType = "client_credentials";
 
     /**
      *
@@ -51,13 +45,12 @@ class Api {
 
     private $delta = 0;
 
-    private $lastTry = 0;
-
     private $endPoints = [
-        'development' => 'http://localhost:8080/',
+        'development' => 'http://localhost:5000/',
         'beta'        => 'https://io.beta.yper.org/',
         'production'  => 'https://api.yper.io/'
     ];
+
     private $endPoint = null;
 
     /**
@@ -127,7 +120,7 @@ class Api {
      * @return string
      */
     private function _createUniqId() {
-        return $this->applicationKey.time().rand();
+        return sha1($this->applicationKey . time() . rand());
     }
 
     /**
@@ -138,8 +131,8 @@ class Api {
      *
      */
     private function _createSignature($method, $url, $timestamp) {
-        $string = $this->applicationSecret."+".$this->accessToken."+".$method."+".$url."+".$timestamp;
-        $signature = "$1$".sha1($string);
+        $string = $this->applicationSecret . "+" . $this->accessToken . "+" . $method . "+" . $url . "+" . $timestamp;
+        $signature = "$1$" . sha1($string);
 
         return $signature;
     }
@@ -157,7 +150,7 @@ class Api {
 
     private function _add_oauth_data($content, $method, $url) {
         $content["oauth_timestamp"]    = time() - $this->delta;
-        $content["oauth_signature"]    = $this->_createSignature("GET", $url, $content["oauth_timestamp"]);
+        $content["oauth_signature"]    = $this->_createSignature($method, $url, $content["oauth_timestamp"]);
         $content["oauth_nonce"]        = $this->_createUniqId();
         $content["oauth_access_token"] = $this->accessToken;
 
@@ -187,7 +180,6 @@ class Api {
             $url .= "?" . http_build_query($content);
         }
 
-        // Get cURL ressource
         $curl = curl_init();
 
         // Setting curl options
@@ -196,19 +188,23 @@ class Api {
             CURLOPT_URL => $url
         ));
 
-        // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        $resp = $this->_decodeResponse($resp);
 
-        // Close request to clear up some resources
         curl_close($curl);
 
-        // $this->debug($resp);
-        if (isset($resp['result'])) {
-            return $resp['result'];
+        if (!$resp) {
+            throw new Exception( "Invalid response from the API service");
         }
 
-        throw new Exception( $resp["errorCode"]." ".$resp["errorMessage"]);
+        $resp = $this->_decodeResponse($resp);
+
+        if (isset($resp['status']) && $resp['status'] == 200 && isset($resp['result'])) {
+            return $resp['result'];
+        } else if (isset($resp['status']) && $resp['status'] != 200 && isset($resp['error_code']) && isset($resp['error_message'])) {
+            throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
+        }
+
+        throw new Exception( "Invalid response from the API service");
     }
 
 
@@ -226,10 +222,8 @@ class Api {
 
         $content = $this->_add_oauth_data($content, "POST", $url);
 
-        // Get cURL resource
         $curl = curl_init();
 
-        // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $url,
@@ -238,23 +232,30 @@ class Api {
             CURLOPT_POSTFIELDS => json_encode($content)
         ));
 
-        // Send the request & save response to $resp
         $resp = curl_exec($curl);
 
-        // Close request to clear up some resources
         curl_close($curl);
 
         if (!$resp) {
-            return false;
+            throw new Exception( "Invalid response from the API service");
         }
 
-        $resp =  $this->_decodeResponse($resp);
+        $resp = $this->_decodeResponse($resp);
 
-        if ($resp['status'] != "200") {
+        if (isset($resp['status']) && $resp['status'] == 200 && isset($resp['result'])) {
+            return $resp['result'];
+        } else if (isset($resp['status']) && $resp['status'] != 200 && isset($resp['error_code']) && isset($resp['error_message'])) {
             throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
         }
 
-        return $resp;
+        throw new Exception( "Invalid response from the API service");
+    }
+
+    public function authenticate_pro_secret($pro_id, $pro_secret_token) {
+        $this->_getOAuthToken("pro_secret_token", [
+            "pro_id" => $pro_id,
+            "pro_secret_token" => $pro_secret_token
+        ]);
     }
 
     /**
@@ -263,17 +264,13 @@ class Api {
      * @return bool
      * @throws Exception
      */
-    private function  _getOAuthToken() {
-
-        if ($this->lastTry > (time() - 5)) {
-            return false;
-        }
-
-        $this->lastTry = time();
+    private function  _getOAuthToken($grant_type = "client_credentials", $params = []) {
+        $content = $params;
 
         $content['app_id'] = $this->applicationKey;
         $content['app_secret'] = $this->applicationSecret;
-        $content['grant_type'] = $this->grantType;
+
+        $content['grant_type'] = $grant_type;
         $content['scope'] = $this->scope;
 
         try {
@@ -286,8 +283,8 @@ class Api {
             throw new \Exception("Authentication Failed");
         }
 
-        $this->accessToken = $return['result']['access_token'];
-        $expiresIn = $return['result']['expires_in'];
+        $this->accessToken = $return['access_token'];
+        $expiresIn = $return['expires_in'];
         $this->expiresAt = time() + $expiresIn;
     }
 
