@@ -12,72 +12,23 @@ namespace Yper\SDK\Service {
 
     class Pro extends AbstractService {
 
-        public function __construct($api) {
+        private $pro_id = null;
+
+        public function __construct($api, $pro_id) {
             parent::__construct($api);
+            $this->pro_id = $pro_id;
         }
 
-        private function _check_arg($options, $param, $required = true, $default = null) {
-
+        public function get_retailpoints() {
+            $result = $this->get("pro/" . $this->pro_id . "/retailpoint");
+            return $result;
         }
 
         /**
-         * book a mission from a pro account
+         * prebook a mission from a pro account
          */
-        public function book($options = []) {
+        public function prebook($options = []) {
 
-            throw new \Exception('not_implemented');
-
-//            $params = [
-//                "delivery_address" => [
-//                    "formatted_address" => "121 rue chanzy, 59260 Lille, France",
-//                    "additional_number" => null, // BIS|TER
-//                    "additinal" => "Comment about the address",
-//                ],
-//                "receiver" => [
-//                    "firstname" => "John",
-//                    "lastname" => "Doe",
-//                    "phone" => "+33612345678",
-//                    "email" => "support@yper.fr"
-//                ],
-//                "retailpoint" => [
-//                    "partner_id" => "00576"
-//                ],
-//                "delivery_start" => "2018-01-28 16:00:00.000Z",
-//                "delivery_end" => "2018-01-28 17:00:08.000Z",
-//                "order" => [
-//                    "order_id" => "123456",
-//                    "options" => ['climb'],
-//                    "size" => "L",
-//                ],
-//                "comment" => "Comment displayed to the shopper"
-//            ];
-
-
-            // Transcript params to the right format for the API Call
-//            $content = [
-//                "address" => [
-//                    "formatted_address" => $params["deliveryAddress"],
-//                    "additional_number" => $params["deliveryAddressAdditionalNumber"],
-//                    "additional" => $params["deliveryAddressAdditional"]
-//                ],
-//                "receiver" => [
-//                    "firstname" => $params["firstname"],
-//                    "lastname" => $params["lastname"],
-//                    "phone" => $params["phone"],
-//                    "email" => $params["email"]
-//                ],
-//                "retailpoint_id" => $params["retailPointId"],
-//                "pro_id" => $params["proId"],
-//                "when" => $params["when"],
-//                "order_id" => $params["orderId"],
-//                "size" => $params["size"],
-//                "options" => $params["options"],
-//                "comment" => $params["comment"],
-//            ];
-//
-//            $return = $this->post("pro/order", $content);
-
-//            return $return;
         }
 
     }
