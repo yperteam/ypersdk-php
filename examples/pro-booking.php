@@ -13,6 +13,12 @@ $applicationSecret = "YOUR_APP_SECRET";
 $pro_id = "PRO_ID";
 $pro_secret = "PRO_SECRET";
 
+$applicationKey = "8397813756";
+$applicationSecret = "P9H326W7ckKF7nswx78B27rgZXWYti";
+
+$pro_id = "48259867A7109";
+$pro_secret = "123456789";
+
 try {
 
     // Instanciate API
@@ -23,6 +29,7 @@ try {
     $proService = new Service\Pro($api, $pro_id);
 
     print_r($proService->get_retailpoints()); // Get pro retailpoints
+    print_r($proService->get_wallet()); // Get pro wallet
 
 //    print_r($proService->prebook([
 //        "delivery_address" => [

@@ -24,6 +24,11 @@ namespace Yper\SDK\Service {
             return $result;
         }
 
+        public function get_wallet() {
+            $result = $this->get("pro/" . $this->pro_id . "/wallet");
+            return $result;
+        }
+
         /**
          * prebook a mission from a pro account
          */
