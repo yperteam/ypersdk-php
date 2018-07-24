@@ -73,8 +73,8 @@ try {
     print_r($cancellable);
 
     // Cancel the mission
-    $proService->post_cancel_mission($mission_id);
-    print_r($cancellable);
+    $res = $proService->post_cancel_mission($mission_id);
+    print_r($res);
 
 } catch(Exception $e) {
     echo "An error occured : " . $e->getMessage();
