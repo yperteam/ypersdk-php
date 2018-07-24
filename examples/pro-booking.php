@@ -30,7 +30,7 @@ try {
         "delivery_address" => [
             "formatted_address" => "121 rue chanzy, 59260 Lille, France", // L'adresse du client en texte
             "additional_number" => null, // Complément sur le numéro de l'adresse : BIS|TER
-            "additinal" => "Comment about the address", // Commentaire sur l'adresse du client
+            "additional" => "Comment about the address", // Commentaire sur l'adresse du client
         ],
         "receiver" => [
             "firstname" => "John", // Prénom du client
