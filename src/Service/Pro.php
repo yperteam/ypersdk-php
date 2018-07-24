@@ -33,21 +33,27 @@ namespace Yper\SDK\Service {
          * prebook a mission from a pro account
          */
         public function post_prebook($options = []) {
-            return [
-                'prebook_id' => 'abcdefg',
-                'price' => 14.8
-            ];
-
             $result = $this->post("pro/" . $this->pro_id . "/prebook", $options);
             return $result;
         }
 
         public function post_validate_prebook($prebook_id) {
-            return [
-                'mission_id' => 'abcdefg'
-            ];
+            $result = $this->post("pro/" . $this->pro_id . "/prebook/" . $prebook_id . "/validate", null);
+            return $result;
+        }
 
-            $result = $this->post("pro/" . $this->pro_id . "/prebook/" + $prebook_id + "/validate", null);
+        public function get_mission($mission_id) {
+            $result = $this->get("pro/" . $this->pro_id . "/mission/" . $mission_id);
+            return $result;
+        }
+
+        public function get_cancel_mission($mission_id) {
+            $result = $this->get("pro/" . $this->pro_id . "/mission/" . $mission_id . "/cancel");
+            return $result;
+        }
+
+        public function post_cancel_mission($mission_id) {
+            $result = $this->post("pro/" . $this->pro_id . "/mission/" . $mission_id . "/cancel");
             return $result;
         }
 
