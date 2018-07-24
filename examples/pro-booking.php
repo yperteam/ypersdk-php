@@ -13,12 +13,6 @@ $applicationSecret = "YOUR_APP_SECRET";
 $pro_id = "PRO_ID";
 $pro_secret = "PRO_SECRET";
 
-$applicationKey = "***REMOVED***";
-$applicationSecret = "***REMOVED***";
-
-$pro_id = "***REMOVED***";
-$pro_secret = "***REMOVED***";
-
 try {
 
     // Instanciate API
