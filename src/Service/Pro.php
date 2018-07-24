@@ -32,8 +32,23 @@ namespace Yper\SDK\Service {
         /**
          * prebook a mission from a pro account
          */
-        public function prebook($options = []) {
+        public function post_prebook($options = []) {
+            return [
+                'prebook_id' => 'abcdefg',
+                'price' => 14.8
+            ];
 
+            $result = $this->post("pro/" . $this->pro_id . "/prebook", $options);
+            return $result;
+        }
+
+        public function post_validate_prebook($prebook_id) {
+            return [
+                'mission_id' => 'abcdefg'
+            ];
+
+            $result = $this->post("pro/" . $this->pro_id . "/prebook/" + $prebook_id + "/validate", null);
+            return $result;
         }
 
     }

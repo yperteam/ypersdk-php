@@ -14,7 +14,6 @@ $pro_id = "PRO_ID";
 $pro_secret = "PRO_SECRET";
 
 
-
 try {
 
     // Instanciate API
