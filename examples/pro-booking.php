@@ -7,11 +7,13 @@ use Yper\SDK\Api;
 use Yper\SDK\Service;
 
 // Informations about your application
-$applicationKey = "YOUR_APP_ID";
-$applicationSecret = "YOUR_APP_SECRET";
+$applicationKey = "***REMOVED***";
+$applicationSecret = "***REMOVED***";
+$applicationKey = "***REMOVED***";
+$applicationSecret = "***REMOVED***";
 
-$pro_id = "PRO_ID";
-$pro_secret = "PRO_SECRET";
+$pro_id = "***REMOVED***";
+$pro_secret = "***REMOVED***";
 
 try {
 
@@ -23,8 +25,8 @@ try {
     $proService = new Service\Pro($api, $pro_id);
 
     $rps = $proService->get_retailpoints();
-    print_r($rps); // Get pro retailpoints
-    print_r($proService->get_wallet()); // Get pro wallet
+    //print_r($rps); // Get pro retailpoints
+    //print_r($proService->get_wallet()); // Get pro wallet
 
     $res = $proService->post_prebook([
         "delivery_address" => [
@@ -41,9 +43,9 @@ try {
         "retailpoint" => [
             "id" => $rps[0]['_id'] // Identifiant partenaire du magasin (votre identifint)
         ],
-        "mission_template_id" => null, // Type de livraison yper (si non renseigné, prend celui par défaut)
-        "delivery_start" => "2018-01-28 16:00:00.000Z", // Heure de début de livraison
-        "delivery_end" => "2018-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
+        "mission_template_id" => "59a95f6096d82b3334431az7", // Type de livraison yper (si non renseigné, prend celui par défaut)
+        "delivery_start" => "2019-01-28 16:00:00.000Z", // Heure de début de livraison
+        "delivery_end" => "2019-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
         "order" => [
             "order_id" => "123456", // Numéro de commande // FACULTATIF : Si non saisi, nous en générons un par défaut
             "options" => ['climb'], // Options sur la commande // FACULTATIF
@@ -57,24 +59,24 @@ try {
 
     print_r($res);
 
-    $prebook_id = $res['prebook_id'];
-
-    $res = $proService->post_validate_prebook($prebook_id);
-    $mission_id = $res['mission_id'];
-
-    print_r($res);
-
-    // Get mission informations
-    $mission = $proService->get_mission($mission_id);
-    print_r($mission);
-
-    // Return if mission is cancellable and the fee
-    $cancellable = $proService->get_cancel_mission($mission_id);
-    print_r($cancellable);
-
-    // Cancel the mission
-    $res = $proService->post_cancel_mission($mission_id);
-    print_r($res);
+    //$prebook_id = $res['prebook_id'];
+//
+    //$res = $proService->post_validate_prebook($prebook_id);
+    //$mission_id = $res['mission_id'];
+//
+    //print_r($res);
+//
+    //// Get mission informations
+    //$mission = $proService->get_mission($mission_id);
+    //print_r($mission);
+//
+    //// Return if mission is cancellable and the fee
+    //$cancellable = $proService->get_cancel_mission($mission_id);
+    //print_r($cancellable);
+//
+    //// Cancel the mission
+    //$res = $proService->post_cancel_mission($mission_id);
+    //print_r($res);
 
 } catch(Exception $e) {
     echo "An error occured : " . $e->getMessage();
