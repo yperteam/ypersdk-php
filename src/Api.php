@@ -77,7 +77,7 @@ class Api {
             throw new Exception("Application key parameter is empty");
         }
 
-        if (!isset($applicationSecret) || empty($applicationKey)) {
+        if (!isset($applicationSecret) || empty($applicationSecret)) {
             throw new Exception("Application secret parameter is empty");
         }
 
