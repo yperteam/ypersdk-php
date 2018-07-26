@@ -56,12 +56,11 @@ try {
     ]);
 
     print_r($res);
-
+    $prebook_id = $res['prebook_id'];
+    
     // Get mission template list
     $res = $proService->get_retailpoint_mission_templates($rps[0]["_id"]);
     print_r($res);
-
-    $prebook_id = $res['prebook_id'];
 
     $res = $proService->post_validate_prebook($prebook_id);
     $mission_id = $res['mission_id'];
