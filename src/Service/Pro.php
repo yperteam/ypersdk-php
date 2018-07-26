@@ -24,6 +24,11 @@ namespace Yper\SDK\Service {
             return $result;
         }
 
+        public function get_retailpoint_mission_templates($retailpoint_id) {
+            $result = $this->get("pro/" . $this->pro_id . "/retailpoint/" . $retailpoint_id . "/mission_templates");
+            return $result;
+        }
+
         public function get_wallet() {
             $result = $this->get("pro/" . $this->pro_id . "/wallet");
             return $result;
