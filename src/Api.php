@@ -199,7 +199,7 @@ class Api {
         $resp = $this->_decodeResponse($resp);
 
         if (isset($resp['status']) && $resp['status'] == 200 && isset($resp['result'])) {
-            return $resp['result'];
+            return $resp;
         } else if (isset($resp['status']) && $resp['status'] != 200 && isset($resp['error_code']) && isset($resp['error_message'])) {
             throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
         }
@@ -243,7 +243,7 @@ class Api {
         $resp = $this->_decodeResponse($resp);
 
         if (isset($resp['status']) && $resp['status'] == 200 && isset($resp['result'])) {
-            return $resp['result'];
+            return $resp;
         } else if (isset($resp['status']) && $resp['status'] != 200 && isset($resp['error_code']) && isset($resp['error_message'])) {
             throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
         }
