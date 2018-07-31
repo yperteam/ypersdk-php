@@ -100,6 +100,9 @@ class Api {
 
         // Fetching server time and calculating delta
         $returnHour    = $this->get('time');
+
+        $returnHour    = $returnHour['result'];
+
         $unixTimestamp = $returnHour['unix'];
         $time          = time();
         $this->delta   = $time - $unixTimestamp;
