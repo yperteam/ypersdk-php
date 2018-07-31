@@ -16,7 +16,7 @@ $pro_secret = "PRO_SECRET";
 try {
 
     // Instanciate API
-    $api = new Api($applicationKey, $applicationSecret, [], 'beta'); // development | beta | production // defaults to : production
+    $api = new Api($applicationKey, $applicationSecret, [], 'development'); // development | beta | production // defaults to : production
 
     $api->authenticate_pro_secret($pro_id, $pro_secret); // Authenticate with the pro_id and pro_secret ; Available in yper.pro backoffice
 
@@ -26,11 +26,21 @@ try {
     print_r($rps); // Get pro retailpoints
     print_r($proService->get_wallet()); // Get pro wallet
 
+    $res = $proService->post_retailpoint_eligible([
+        "retailpoint_id"=> $rps[0]['_id'], // Identifiant partenaire du magasin (votre identifiant)
+        "delivery_address" => [
+            "formatted_address" => "121 rue chanzy, 59260 Lille, France", // L'adresse du client en texte
+            "additional_number" => null, // Complément sur le numéro de l'adresse : BIS|TER
+            "additional" => "Comment about the address", // Commentaire sur l'adresse du client
+        ]
+    ]);
+    print_r($res);
+
     $res = $proService->post_prebook([
         "delivery_address" => [
             "formatted_address" => "121 rue chanzy, 59260 Lille, France", // L'adresse du client en texte
             "additional_number" => null, // Complément sur le numéro de l'adresse : BIS|TER
-            "additinal" => "Comment about the address", // Commentaire sur l'adresse du client
+            "additional" => "Comment about the address", // Commentaire sur l'adresse du client
         ],
         "receiver" => [
             "firstname" => "John", // Prénom du client
@@ -39,11 +49,11 @@ try {
             "email" => "support@yper.fr" // Adresse email du client
         ],
         "retailpoint" => [
-            "id" => $rps[0]['_id'] // Identifiant partenaire du magasin (votre identifint)
+            "id" => $rps[0]['_id'] // Identifiant partenaire du magasin (votre identifiant)
         ],
         "mission_template_id" => null, // Type de livraison yper (si non renseigné, prend celui par défaut)
-        "delivery_start" => "2018-01-28 16:00:00.000Z", // Heure de début de livraison
-        "delivery_end" => "2018-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
+        "delivery_start" => "2019-01-28 16:00:00.000Z", // Heure de début de livraison
+        "delivery_end" => "2019-01-28 17:00:08.000Z", // Defaults to "delivery_start" + 1 hour
         "order" => [
             "order_id" => "123456", // Numéro de commande // FACULTATIF : Si non saisi, nous en générons un par défaut
             "options" => ['climb'], // Options sur la commande // FACULTATIF
@@ -56,8 +66,11 @@ try {
     ]);
 
     print_r($res);
-
     $prebook_id = $res['prebook_id'];
+
+    // Get mission template list
+    $res = $proService->get_retailpoint_mission_templates($rps[0]["_id"]);
+    print_r($res);
 
     $res = $proService->post_validate_prebook($prebook_id);
     $mission_id = $res['mission_id'];
