@@ -283,6 +283,8 @@ class Api {
             throw new \Exception("Authentication Failed");
         }
 
+        $return = $return['result'];
+
         $this->accessToken = $return['access_token'];
         $expiresIn = $return['expires_in'];
         $this->expiresAt = time() + $expiresIn;
