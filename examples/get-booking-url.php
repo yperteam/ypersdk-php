@@ -7,9 +7,6 @@ require_once "../src/service/Mission.php";
 $applicationKey = "YOUR_APPLICATION_KEY";
 $applicationSecret = "YOUR_APPLICATION_SECRET";
 
-$applicationKey = "***REMOVED***";
-$applicationSecret = "***REMOVED***";
-
 try {
     // Instanciate API
     $api = new \Yper\SDK\Api($applicationKey, $applicationSecret, [],'beta'); // development | beta | production // defaults to : production
