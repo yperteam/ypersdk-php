@@ -24,8 +24,8 @@ namespace Yper\SDK\Service {
             return $result;
         }
 
-        public function post_retailpoint_eligible($options = []) {
-            $result = $this->post("pro/" . $this->pro_id . "/retailpoint/" . $options["retailpoint_id"] . "/eligible", $options);
+        public function get_retailpoint_eligible($options = []) {
+            $result = $this->get("pro/" . $this->pro_id . "/retailpoint/" . $options["retailpoint_id"] . "/eligible", $options);
             return $result;
         }
 
