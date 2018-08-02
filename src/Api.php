@@ -3,7 +3,7 @@
 # All rights reserved.
 
 namespace Yper\SDK;
-use Exception;
+use Yper\SDK\YperException;
 
 class Api {
 
@@ -204,7 +204,7 @@ class Api {
         if (isset($resp['status']) && $resp['status'] == 200 && isset($resp['result'])) {
             return $resp;
         } else if (isset($resp['status']) && $resp['status'] != 200 && isset($resp['error_code']) && isset($resp['error_message'])) {
-            throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
+            throw new YperException($resp["error_code"], $resp["error_message"]);
         }
 
         throw new Exception( "Invalid response from the API service");
@@ -239,6 +239,8 @@ class Api {
 
         curl_close($curl);
 
+        print_r($resp);
+
         if (!$resp) {
             throw new Exception( "Invalid response from the API service");
         }
@@ -248,7 +250,7 @@ class Api {
         if (isset($resp['status']) && $resp['status'] == 200 && isset($resp['result'])) {
             return $resp;
         } else if (isset($resp['status']) && $resp['status'] != 200 && isset($resp['error_code']) && isset($resp['error_message'])) {
-            throw new Exception($resp["error_code"]." => ".$resp["error_message"]);
+            throw new YperException($resp["error_code"], $resp["error_message"]);
         }
 
         throw new Exception( "Invalid response from the API service");
