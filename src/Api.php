@@ -239,8 +239,6 @@ class Api {
 
         curl_close($curl);
 
-        print_r($resp);
-
         if (!$resp) {
             throw new Exception( "Invalid response from the API service");
         }
