@@ -3,7 +3,9 @@
 # All rights reserved.
 
 namespace Yper\SDK;
+
 use Yper\SDK\YperException;
+use Exception;
 
 class Api {
 
