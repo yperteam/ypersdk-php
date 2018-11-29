@@ -29,16 +29,6 @@ try {
     print_r($rps); // Get pro retailpoints
     print_r($proService->get_wallet()); // Get pro wallet
 
-//    $res = $proService->get_retailpoint_eligible([
-//        "retailpoint_id"=> $address, // Identifiant partenaire du magasin (votre identifiant)
-//        "delivery_address" => [
-//            "formatted_address" => "Maubeuge", // L'adresse du client en texte
-//            "additional_number" => null, // Complément sur le numéro de l'adresse : BIS|TER
-//            "additional" => "Comment about the address", // Commentaire sur l'adresse du client
-//        ]
-//    ]);
-//    print_r($res);
-
     try {
         $res = $proService->post_prebook([
             "delivery_address" => [
