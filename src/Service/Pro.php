@@ -24,13 +24,8 @@ namespace Yper\SDK\Service {
             return $result;
         }
 
-        public function get_retailpoint_eligible($options = []) {
-            $result = $this->get("pro/" . $this->pro_id . "/retailpoint/" . $options["retailpoint_id"] . "/eligible", $options);
-            return $result;
-        }
-
         public function get_retailpoint_mission_templates($retailpoint_id) {
-            $result = $this->get("pro/" . $this->pro_id . "/retailpoint/" . $retailpoint_id . "/mission_templates");
+            $result = $this->get("pro/" . $this->pro_id . "/retailpoint/" . $retailpoint_id . "/mission_template");
             return $result;
         }
 
