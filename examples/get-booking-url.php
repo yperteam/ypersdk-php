@@ -1,15 +1,18 @@
 <?php
 
+require_once "../src/Request.php";
+require_once "../src/Response.php";
+require_once "../src/YperException.php";
 require_once "../src/Api.php";
 require_once "../src/service/Mission.php";
 
 // Informations about your application
-$applicationKey = "YOUR_APPLICATION_KEY";
-$applicationSecret = "YOUR_APPLICATION_SECRET";
+$applicationKey = "app1";
+$applicationSecret = "app1";
 
 try {
     // Instanciate API
-    $api = new \Yper\SDK\Api($applicationKey, $applicationSecret, [],'beta'); // development | beta | production // defaults to : production
+    $api = new \Yper\SDK\Api($applicationKey, $applicationSecret, [],'development'); // development | beta | production // defaults to : production
 
     // Instanciate retailPointService
     $missionService = new Yper\SDK\Service\Mission($api);

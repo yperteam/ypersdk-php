@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2013-2017, Yper.
+# Copyright (c) 2013-2019, Yper.
 # All rights reserved.
 
 namespace {
