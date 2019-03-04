@@ -1,0 +1,30 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/php:5.6-jessie
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+
+      - run: composer install -n --prefer-dist
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      - run: ./vendor/bin/phplint src/
+
+      #- run: ./vendor/bin/phpunit
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build

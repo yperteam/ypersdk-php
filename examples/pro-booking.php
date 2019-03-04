@@ -1,7 +1,9 @@
 <?php
 
-require_once "../src/Api.php";
+require_once "../src/Request.php";
+require_once "../src/Response.php";
 require_once "../src/YperException.php";
+require_once "../src/Api.php";
 require_once "../src/service/Pro.php";
 
 use Yper\SDK\Api;

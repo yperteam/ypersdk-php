@@ -1,7 +1,6 @@
 <?php
-# Copyright (c) 2013-2017, Yper.
+# Copyright (c) 2013-2019, Yper.
 # All rights reserved.
-
 
 namespace Yper\SDK\Service;
 
@@ -15,12 +14,20 @@ class AbstractService {
         $this->_api = $api;
     }
 
-    protected function post($path, $content = null) {
-        return $this->_api->post($path, $content);
+    protected function get($path, $content = null, array $options = array()) {
+        return $this->_api->get($path, $content, $options);
     }
 
-    protected function get($path, $content = null) {
-        return $this->_api->get($path, $content);
+    protected function post($path, $content = null, array $options = array()) {
+        return $this->_api->post($path, $content, $options);
+    }
+
+    protected function put($path, $content = null, array $options = array()) {
+        return $this->_api->put($path, $content, $options);
+    }
+
+    protected function delete($path, $content = null, array $options = array()) {
+        return $this->_api->delete($path, $content, $options);
     }
 
 }
