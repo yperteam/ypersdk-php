@@ -14,9 +14,6 @@ class Response {
         $this->httpCode = $httpCode;
         $this->rawResponse = $rawResponse;
         $this->parsedResponse = json_decode($rawResponse, true);
-
-        print($this->httpCode);
-        print($this->rawResponse);
     }
 
     public function getRawResponse() {
@@ -47,7 +44,6 @@ class Response {
             && isset($this->parsedResponse['error_message'])) {
             throw new YperException($this->parsedResponse['error_code'], $this->parsedResponse['error_message']);
         }
-
         throw new YperException('unknown_error', "Unhandled error");
     }
 
