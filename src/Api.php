@@ -30,9 +30,9 @@ class Api {
     private $delta = 0;
 
     private $endpoints = array(
-        'development' => 'http://localhost:5000/',
-        'beta'        => 'https://io.beta.yper.org/',
-        'production'  => 'https://api.yper.io/'
+        'development' => 'http://localhost:5000',
+        'beta'        => 'https://io.beta.yper.org',
+        'production'  => 'https://api.yper.io'
     );
 
     private $environment = null;
