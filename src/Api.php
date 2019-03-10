@@ -73,7 +73,7 @@ class Api {
         $this->baseURL           = $this->endpoints[$environment];
 
         // Fetching server time and calculating delta
-        $returnHour    = $this->get('time', null, array('need_authentication' => false));
+        $returnHour    = $this->get('/time', null, array('need_authentication' => false));
         $returnHour    = $returnHour['result'];
         $unixTimestamp = $returnHour['unix'];
         $time          = time();
@@ -131,7 +131,7 @@ class Api {
         $content['scope'] = $this->scope;
 
         try {
-            $return = $this->post("oauth/token", $content, array('need_authentication' => false));
+            $return = $this->post("/oauth/token", $content, array('need_authentication' => false));
         } catch(Exception $e) {
             throw new YperException('authentication_failed', $e->getMessage());
         }
