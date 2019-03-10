@@ -183,10 +183,6 @@ class Api {
             $this->__authenticate_request();
         }
 
-        echo "TOKEN :::";
-        print_r($this->accessToken);
-        echo "><><><><><><><><><";
-
         $request->addHeader('Authorization', "Bearer " . $this->accessToken);
         $request->addHeader('X-Request-Timestamp', time() - $this->delta);
         $request->setBody($content);
