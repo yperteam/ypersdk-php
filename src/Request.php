@@ -79,9 +79,6 @@ class Request {
     {
         $this->__prepare_request();
 
-        print($this->url);
-        print_r($this->curl_options);
-
         $curl = curl_init();
         curl_setopt_array($curl, $this->curl_options);
         $resp = curl_exec($curl);
