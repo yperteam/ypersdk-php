@@ -160,7 +160,7 @@ class Api {
         print("Going to authenticate");
         if (!$this->accessToken || $this->expiresAt < time()) {
             print("Access token " . $this->accessToken);
-            prnit('Expires at : ' . $this->expiresAt . ' < ' . time());
+            print('Expires at : ' . $this->expiresAt . ' < ' . time());
             $token = $this->__getOAuthToken();
 
             $this->setOAuthToken(
