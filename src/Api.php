@@ -85,8 +85,6 @@ class Api {
         $this->accessToken = $oauthToken;
         $this->expiresAt = $expiresAt;
         $this->refreshToken = $refreshToken;
-
-        print("Setting oauth token : " . $oauthToken . ' ' . $expiresAt . ' ' . $refreshToken);
     }
 
     public function refreshToken($refresh_token) {
@@ -157,10 +155,7 @@ class Api {
      * @throws Exception
      */
     private function __authenticate_request() {
-        print("Going to authenticate");
         if (!$this->accessToken || $this->expiresAt < time()) {
-            print("Access token " . $this->accessToken);
-            print('Expires at : ' . $this->expiresAt . ' < ' . time());
             $token = $this->__getOAuthToken();
 
             $this->setOAuthToken(
