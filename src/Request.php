@@ -18,7 +18,6 @@ class Request {
 
     private $curl_options = array(
         CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_SSL_VERIFYSTATUS => 1,
     );
 
     public function __construct($method, $url)
