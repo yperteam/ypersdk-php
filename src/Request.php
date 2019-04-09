@@ -80,8 +80,6 @@ class Request {
 
         $curl = curl_init();
         curl_setopt_array($curl, $this->curl_options);
-
-        print_r($this->curl_options);
         $resp = curl_exec($curl);
 
         if (!$resp) {
