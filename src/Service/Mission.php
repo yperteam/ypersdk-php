@@ -20,7 +20,7 @@ namespace Yper\SDK\Service {
          * book a mission from a pro account
          */
         public function getBookingURL($params = []) {
-            $return = $this->post("mission/prebook", $params);
+            $return = $this->post("/mission/prebook", $params);
             return $return;
         }
 
