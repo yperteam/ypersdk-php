@@ -31,7 +31,9 @@ class Api {
 
     private $endpoints = array(
         'development' => 'http://localhost:5000',
+        'alpha'       => 'https://io.alpha.yper.org',
         'beta'        => 'https://io.beta.yper.org',
+        'rc'          => 'https://io.rc.yper.org',
         'production'  => 'https://api.yper.io'
     );
 
