@@ -83,6 +83,10 @@ class Api {
 
     }
 
+    public function getBaseURL() {
+        return $this->baseURL;
+    }
+
     public function setOAuthToken($oauthToken, $expiresAt, $refreshToken) {
         $this->accessToken = $oauthToken;
         $this->expiresAt = $expiresAt;
