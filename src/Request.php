@@ -67,6 +67,7 @@ class Request {
 
         if ($this->method == 'PUT') {
             $this->curl_options[CURLOPT_CUSTOMREQUEST] = 'PUT';
+            $this->curl_options[CURLOPT_POSTFIELDS] = json_encode($this->body);
         }
 
         if ($this->method == 'DELETE') {
