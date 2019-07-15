@@ -25,24 +25,27 @@ class Response {
     }
 
     public function isSuccess() {
-        if ($this->httpCode >= 200 && $this->httpCode < 400) {
-            return true;
-        }
-        return false;
+        return ($this->httpCode >= 200 && $this->httpCode < 400);
     }
 
     public function isFailure() {
-        if ($this->httpCode >= 400) {
-            return true;
-        }
-        return false;
+        return ($this->httpCode >= 400);
+    }
+
+    public function isAuthError() {
+        return ($this->httpCode == 403);
     }
 
     public function getErrorAsException() {
         if ($this->isFailure()
             && isset($this->parsedResponse['error_code'])
             && isset($this->parsedResponse['error_message'])) {
-            throw new YperException($this->parsedResponse['error_code'], $this->parsedResponse['error_message']);
+            if ($this->isAuthError()) {
+                throw new AuthException($this->parsedResponse['error_code'],
+                                        $this->parsedResponse['error_message']);
+            }
+            throw new YperException($this->parsedResponse['error_code'],
+                                    $this->parsedResponse['error_message']);
         }
         throw new YperException('unknown_error', "Unhandled error");
     }
