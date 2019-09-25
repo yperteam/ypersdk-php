@@ -75,6 +75,31 @@ class Request {
         }
     }
 
+    public function download($path) {
+        $this->__prepare_request();
+
+        $curl = curl_init();
+        curl_setopt_array($curl, $this->curl_options);
+        $data = curl_exec($curl);
+
+        if (!$data) {
+            throw new YperException("internal_error", "No response from the API service.");
+        }
+
+        $file = fopen($path, "w+");
+        fputs($file, $data);
+        fclose($file);
+
+        $response = new Response(
+            curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            null
+        );
+
+        curl_close($curl);
+
+        return $response;
+    }
+
     public function execute()
     {
         $this->__prepare_request();
