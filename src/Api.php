@@ -216,6 +216,8 @@ class Api {
         $this->__prepare_request($req, $content, $options);
         $response = $req->execute();
 
+        print_r($response->getResponse());
+
         if ($response->isSuccess()) {
             return $response->getResponse();
         } else {
@@ -284,6 +286,18 @@ class Api {
 
         if ($response->isSuccess()) {
             return $response->getResponse();
+        } else {
+            $response->getErrorAsException();
+        }
+    }
+
+    public function download($path, $filename) {
+        $url = $this->baseURL . $path;
+        $req = new Request('GET', $url);
+        $this->__prepare_request($req, [], []);
+        $response = $req->download($filename);
+        if ($response->isSuccess()) {
+            return true;
         } else {
             $response->getErrorAsException();
         }
