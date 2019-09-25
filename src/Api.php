@@ -216,8 +216,6 @@ class Api {
         $this->__prepare_request($req, $content, $options);
         $response = $req->execute();
 
-        print_r($response->getResponse());
-
         if ($response->isSuccess()) {
             return $response->getResponse();
         } else {
