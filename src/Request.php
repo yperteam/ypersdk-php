@@ -75,6 +75,13 @@ class Request {
         }
     }
 
+    /**
+     * Classic request but write the output in a file (path)
+     *
+     * @param $path
+     * @return Response
+     * @throws YperException
+     */
     public function download($path) {
         $this->__prepare_request();
 

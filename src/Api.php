@@ -289,6 +289,14 @@ class Api {
         }
     }
 
+    /**
+     * Download a file (via a GET request)
+     *
+     * @param $path
+     * @param $filename
+     * @return bool
+     * @throws \Yper\SDK\YperException
+     */
     public function download($path, $filename) {
         $url = $this->baseURL . $path;
         $req = new Request('GET', $url);
