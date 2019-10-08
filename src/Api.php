@@ -44,9 +44,9 @@ class Api {
      * Construct a new wrapper instance
      *
      * @param string $applicationKey key of your application.
-     *
      * @param string $applicationSecret secret of your application.
-     * @param string $endPoint
+     * @param array  $scope
+     * @param string $environment
      * @throws Exception
      */
     public function __construct(
@@ -259,7 +259,6 @@ class Api {
         $req = new Request('PUT', $url);
         $this->__prepare_request($req, $content, $options);
         $response = $req->execute();
-
         if ($response->isSuccess()) {
             return $response->getResponse();
         } else {
