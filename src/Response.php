@@ -48,7 +48,7 @@ class Response {
                                     $this->parsedResponse['error_message'],
                                     $this->httpCode);
         }
-        throw new YperException('unknown_error', "Unhandled error");
+        throw new YperException('unknown_error', "Unhandled error", $this->httpCode);
     }
 
 }
