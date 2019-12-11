@@ -8,7 +8,7 @@ namespace Yper\SDK\Helper {
 
         public static function validateParams($array, $validation) {
 
-            $finalParams = [];
+            $finalParams = array();
 
             foreach ($validation as $param => $conditions) {
 
