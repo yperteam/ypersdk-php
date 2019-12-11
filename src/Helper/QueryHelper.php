@@ -10,7 +10,7 @@ class QueryHelper
      * get the encoded url
      * @param array $args
      */
-    function __construct(array $args)
+    function __construct(...$args)
     {
         $formattedArray = array();
 
