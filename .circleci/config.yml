@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:5.6-jessie
+      - image: circleci/php:7.2-buster
     working_directory: ~/repo
     steps:
       - checkout
