@@ -11,3 +11,7 @@ New exception `AuthException` inheriting from `YperException` to distinguish 403
 - QueryHelper to properly encode in http url different variable types as:
     - `\DateTime`
     - `bool`
+
+## 4.1.0
+
+- Add (non-associative) array encoding support for QueryHelper (GET)

@@ -57,7 +57,6 @@ class Request {
         // TODO : Maybe stop to handle this ... not very logical
         if ($this->method == 'GET' && $this->body) {
             $queryHelper = new QueryHelper($this->body);
-
             $this->url .= $queryHelper->getEncodedUrl();
         }
 
