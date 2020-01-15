@@ -307,4 +307,36 @@ class Api {
             $response->getErrorAsException();
         }
     }
+
+    /**
+     * POST requests
+     *
+     * @param string $path path ask inside api
+     * @param array $content content to send inside body of request
+     * @param array $options Associative of options for this request
+     * @return array
+     * @throws Exception
+     */
+    public function upload($path, $file, array $options = array()) {
+        $url =  $this->baseURL . $path;
+        $req = new Request('UPLOAD', $url);
+
+        $req->addHeader("Content-Type", "multipart/form-data") ;
+
+        $content = [
+            $file['name'] => curl_file_create(
+                        $file['path'], 
+                        mime_content_type($file['path']),
+                        $file['name'])
+        ] ;
+
+        $this->__prepare_request($req, $content, $options);
+        $response = $req->execute();
+
+        if ($response->isSuccess()) {
+            return $response->getResponse();
+        } else {
+            $response->getErrorAsException();
+        }
+    }
 }

@@ -76,6 +76,13 @@ class Request {
         if ($this->method == 'DELETE') {
             $this->curl_options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
         }
+
+        if ($this->method == 'UPLOAD') {
+            
+            $this->method = 'POST' ;
+            $this->curl_options[CURLOPT_POST] = 1;
+            $this->curl_options[CURLOPT_POSTFIELDS] = $this->body;
+        }
     }
 
     /**
