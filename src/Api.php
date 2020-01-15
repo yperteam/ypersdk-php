@@ -330,6 +330,8 @@ class Api {
                         $file['name'])
         ] ;
 
+        print_r($content) ;
+
         $this->__prepare_request($req, $content, $options);
         $response = $req->execute();
 
