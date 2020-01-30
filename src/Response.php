@@ -16,7 +16,7 @@ class Response {
         $this->parsedResponse = json_decode($rawResponse, true);
         if (json_last_error() != JSON_ERROR_NONE) {
             throw new YperException(json_last_error(),
-                                    json_last_error_msg(),
+                                    "Json decode error: ".json_last_error_msg(),
                                     500);
         }
     }
