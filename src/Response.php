@@ -14,6 +14,11 @@ class Response {
         $this->httpCode = $httpCode;
         $this->rawResponse = $rawResponse;
         $this->parsedResponse = json_decode($rawResponse, true);
+        if (json_last_error() != JSON_ERROR_NONE) {
+            throw new YperException(json_last_error(),
+                                    "Json decode error: ".json_last_error_msg(),
+                                    500);
+        }
     }
 
     public function getRawResponse() {

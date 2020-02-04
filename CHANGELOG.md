@@ -15,3 +15,7 @@ New exception `AuthException` inheriting from `YperException` to distinguish 403
 ## 4.1.0
 
 - Add (non-associative) array encoding support for QueryHelper (GET)
+
+## 4.1.1
+
+- Throw error on json payload parsing (instead of a silent error)
