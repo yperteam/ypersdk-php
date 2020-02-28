@@ -19,3 +19,7 @@ New exception `AuthException` inheriting from `YperException` to distinguish 403
 ## 4.1.1
 
 - Throw error on json payload parsing (instead of a silent error)
+
+## 4.1.2
+
+- Remove "?" character from QueryHelper when arguments are provided
