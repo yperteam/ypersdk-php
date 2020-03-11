@@ -4,6 +4,8 @@
 
 namespace Yper\SDK;
 
+use Yper\SDK\Helper\QueryHelper;
+
 class Request {
 
     private $method;
@@ -54,7 +56,8 @@ class Request {
     private function __prepare_request() {
         // TODO : Maybe stop to handle this ... not very logical
         if ($this->method == 'GET' && $this->body) {
-            $this->url .= "?" . http_build_query($this->body);
+            $queryHelper = new QueryHelper($this->body);
+            $this->url .= $queryHelper->getEncodedUrl();
         }
 
         $this->curl_options[CURLOPT_URL] = $this->url;

@@ -3,3 +3,4 @@
 vendor/
 *.tmp.txt
 .phplint-cache
+.phpunit.result.cache

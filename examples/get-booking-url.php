@@ -7,8 +7,8 @@ require_once "../src/Api.php";
 require_once "../src/service/Mission.php";
 
 // Informations about your application
-$applicationKey = "***REMOVED***";
-$applicationSecret = "***REMOVED***";
+$applicationKey = "app1";
+$applicationSecret = "app1";
 
 try {
     // Instanciate API
