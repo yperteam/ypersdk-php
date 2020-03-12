@@ -16,13 +16,6 @@ $applicationSecret = "YOUR_APP_SECRET";
 $proId = "YOUR_PRO_ID";
 $proSecret = "YOUR_PRO_SECRET";
 try {
-
-    /**
-        ************************************************************
-        NOTE: THIS INTEGRATION IS DEPRECATED. PLEASE CHECK pro-booking-v2.php
-        ************************************************************
-     */
-
     // Instanciate API
     $api = new Api($applicationKey, $applicationSecret, [], 'beta'); // development | beta | production // defaults to : production
 
