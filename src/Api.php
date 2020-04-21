@@ -307,4 +307,24 @@ class Api {
             $response->getErrorAsException();
         }
     }
+
+    /**
+     * Upload a file (via a POST request)
+     *
+     * @param $path
+     * @param UploadedFile $file
+     * @return bool
+     * @throws Exception
+     */
+    public function upload($path, $file) {
+        $url = $this->baseURL . $path;
+        $req = new Request('POST', $url);
+
+        $this->__prepare_request($req, [], ["headers" => ['Content-Type' => 'multipart/form-data']]);
+        $response = $req->upload($file);
+        if ($response->isSuccess()) {
+            return $response->getResponse();
+        }
+        $response->getErrorAsException();
+    }
 }

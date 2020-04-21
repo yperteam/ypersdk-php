@@ -13,10 +13,10 @@ class Request {
     private $needAuthentication = true;
 
     private $body = null;
-    private $headers = array(
-        'Accept: application/json',
-        'Content-Type: application/json'
-    );
+    private $headers = [
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json'
+    ];
 
     private $curl_options = array(
         CURLOPT_RETURNTRANSFER => 1,
@@ -44,8 +44,18 @@ class Request {
 
     public function addHeader($header, $value)
     {
-        $this->headers[] = $header . ': ' . $value;
+        $this->headers[$header] = $value;
         return $this;
+    }
+
+    public function serializeHeader()
+    {
+        $ret = [];
+        foreach ($this->headers as $key => $header){
+            $ret[] = $key . ': ' . $header;
+        }
+
+        return $ret;
     }
 
     public function setBody($body) {
@@ -61,7 +71,7 @@ class Request {
         }
 
         $this->curl_options[CURLOPT_URL] = $this->url;
-        $this->curl_options[CURLOPT_HTTPHEADER] = $this->headers;
+        $this->curl_options[CURLOPT_HTTPHEADER] = $this->serializeHeader();
 
         if ($this->method == 'POST') {
             $this->curl_options[CURLOPT_POST] = 1;
@@ -132,4 +142,35 @@ class Request {
         return $response;
     }
 
+    /**
+     * Upload a $file in a filed named "value"
+     *
+     * @param UploadedFile $file
+     * @return Response
+     * @throws YperException
+     */
+    public function upload($file)
+    {
+        $this->__prepare_request();
+
+        $curl = curl_init();
+        curl_setopt_array($curl, $this->curl_options);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        $postData = ['value' => curl_file_create(realpath($file->getPathname()), $file->getClientMimeType(), $file->getClientOriginalName())];
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $postData);
+
+        $data = curl_exec($curl);
+
+        if (!$data) {
+            throw new YperException("internal_error", "No response from the API service.");
+        }
+
+        $response = new Response(
+            curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            $data
+        );
+        curl_close($curl);
+
+        return $response;
+    }
 }
