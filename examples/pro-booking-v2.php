@@ -5,6 +5,7 @@ require_once "../src/Response.php";
 require_once "../src/YperException.php";
 require_once "../src/Api.php";
 require_once "../src/service/Pro.php";
+require_once "../src/service/Order.php";
 
 use Yper\SDK\Api;
 use Yper\SDK\Service;
@@ -16,17 +17,24 @@ $applicationSecret = "YOUR_APP_SECRET";
 $proId = "YOUR_PRO_ID";
 $proSecret = "YOUR_PRO_SECRET";
 try {
+
     // Instanciate API
     $api = new Api($applicationKey, $applicationSecret, [], 'beta'); // development | beta | production // defaults to : production
 
-    $api->authenticate_pro_secret($proId, $proSecret); // Authenticate with the pro_id and pro_secret ; Available in yper.pro backoffice
+    $api->authenticate_pro_secret($proId, $proSecret); // Authenticate with the pro_id and pro_secret ; Available in yper.shop backoffice
     $proService = new Service\Pro($api, $proId);
 
     $address = "50 Rue du Commerce 59790 Ronchin";
 
-    $rps = $proService->get_retailpoints();
-    print_r($rps); // Get pro retailpoints
-    print_r($proService->get_wallet()); // Get pro wallet
+//    $rps = $proService->get_retailpoints();
+//    print_r($rps); // Get pro retailpoints
+
+    // Get mission template list
+    // $res = $proService->get_retailpoint_mission_templates($rps['result'][0]["_id"]);
+    // print_r($res);
+
+    // Create an order ;
+    $orderId = $proService->create_order();
 
     try {
         $res = $proService->post_prebook([
@@ -35,6 +43,7 @@ try {
                 "additional_number" => null, // Complément sur le numéro de l'adresse : BIS|TER
                 "additional" => "Comment about the address", // Commentaire sur l'adresse du client
             ],
+            "order_id" => $orderId,
             "receiver" => [
                 "firstname" => "John", // Prénom du client
                 "lastname" => "Doe", // Nom du client
@@ -68,26 +77,33 @@ try {
         die();
     }
 
-
     print_r($res);
-    $prebook_id = $res['result']['prebook_id'];
+    $prebookId = $res['result']['prebook_id'];
 
-    $res = $proService->post_validate_prebook($prebook_id);
-    $mission_id = $res['result']['mission_id'];
-    print_r($res);
+    $orderService = new Service\Order($api, $orderId);
+    $orderService->add_delivery($prebookId);
+    $orderService->validate();
+
+    // OPTIONAL : Note this call to pay() is optionnal and depends on your billing situation.
+    // Contact us when you integrate our API to know if you need to call it
+    // $orderService->pay();
+
+    $delivery_id = $prebookId;
 
     // Get mission informations
-    $mission = $proService->get_mission($mission_id);
+    $mission = $proService->get_delivery($delivery_id);
     print_r($mission);
 
-    // Return if mission is cancellable and the fee
-    // $cancellable = $proService->get_cancel_mission($mission_id);
+    // Return if delivery is cancellable and the fee
+    // $cancellable = $proService->get_cancel_delivery($delivery_id);
     // print_r($cancellable);
 
-    // Cancel the mission
-    // $res = $proService->post_cancel_mission($mission_id);
+    // Cancel the delivery
+    // $res = $proService->post_cancel_delivery($delivery_id);
     // print_r($res);
 
-} catch (Exception $e) {
+} catch(Exception $e) {
     echo "An error occured : " . $e->getMessage();
 }
+
+?>

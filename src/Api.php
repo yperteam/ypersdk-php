@@ -5,6 +5,7 @@
 namespace Yper\SDK;
 
 use Yper\SDK\YperException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Exception;
 
 class Api {
@@ -306,5 +307,26 @@ class Api {
         } else {
             $response->getErrorAsException();
         }
+    }
+
+    /**
+     * Upload a file (via a POST request)
+     *
+     * @param $path
+     * @param UploadedFile $file
+     * @return bool
+     * @throws AuthException
+     * @throws \Yper\SDK\YperException
+     */
+    public function upload($path, $file) {
+        $url = $this->baseURL . $path;
+        $req = new Request('POST', $url);
+
+        $this->__prepare_request($req, [], ["headers" => ['Content-Type' => 'multipart/form-data']]);
+        $response = $req->upload($file);
+        if ($response->isSuccess()) {
+            return $response->getResponse();
+        }
+        $response->getErrorAsException();
     }
 }

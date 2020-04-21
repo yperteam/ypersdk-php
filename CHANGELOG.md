@@ -23,3 +23,7 @@ New exception `AuthException` inheriting from `YperException` to distinguish 403
 ## 4.1.2
 
 - Remove "?" character from QueryHelper when arguments are provided
+
+## 4.2.0
+
+- Add upload() method to upload file(s) in a field named "value"
