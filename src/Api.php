@@ -4,7 +4,6 @@
 
 namespace Yper\SDK;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Yper\SDK\YperException;
 use Exception;
 
