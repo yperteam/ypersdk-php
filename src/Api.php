@@ -72,7 +72,12 @@ class Api {
         $this->applicationSecret = $applicationSecret;
         $this->scope             = $scope;
         $this->environment       = $environment;
-        $this->baseURL           = $this->endpoints[$environment];
+
+        if (isset($this->endpoints[$environment]) && $this->endpoints[$environment]) {
+            $this->baseURL = $this->endpoints[$environment];
+        } else {
+            $this->baseURL = $environment;
+        }
 
         // Fetching server time and calculating delta
         $returnHour    = $this->get('/time', null, array('need_authentication' => false));
@@ -80,7 +85,6 @@ class Api {
         $unixTimestamp = $returnHour['unix'];
         $time          = time();
         $this->delta   = $time - $unixTimestamp;
-
     }
 
     public function getBaseURL() {
