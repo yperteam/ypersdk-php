@@ -27,7 +27,6 @@ class Api {
     private $refreshToken = null;
     private $expiresAt = null;
     private $scope = array();
-    private $delta = 0;
 
     private $endpoints = array(
         'development' => 'http://localhost:5000',
@@ -78,13 +77,6 @@ class Api {
         } else {
             $this->baseURL = $environment;
         }
-
-        // Fetching server time and calculating delta
-        $returnHour    = $this->get('/time', null, array('need_authentication' => false));
-        $returnHour    = $returnHour['result'];
-        $unixTimestamp = $returnHour['unix'];
-        $time          = time();
-        $this->delta   = $time - $unixTimestamp;
     }
 
     public function getBaseURL() {
@@ -195,7 +187,7 @@ class Api {
         }
 
         $request->addHeader('Authorization', "Bearer " . $this->accessToken);
-        $request->addHeader('X-Request-Timestamp', time() - $this->delta);
+        $request->addHeader('X-Request-Timestamp', time());
         $request->setBody($content);
 
         if (isset($options['headers']) && is_array($options['headers'])) {
