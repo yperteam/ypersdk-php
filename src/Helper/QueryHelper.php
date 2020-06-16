@@ -47,7 +47,7 @@ class QueryHelper
             }
         }
 
-        if (count($namedParameters) > 0){
+        if (count($namedParameters) > 0 || count($listParameters) > 0){
             $this->encodedUrl = "?" . http_build_query($namedParameters);
         }
 
