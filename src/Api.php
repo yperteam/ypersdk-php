@@ -178,7 +178,7 @@ class Api {
      * @throws Exception
      */
     private function __prepare_request(Request $request, $content, array $options = array()) {
-        if (isset($options['need_authentication']) && !$options['need_authentication']) {
+         if (isset($options['need_authentication']) && !$options['need_authentication']) {
             $request->disableAuthentication();
         }
 
@@ -229,6 +229,9 @@ class Api {
      * @throws Exception
      */
     public function post($path, $content = null, array $options = array()) {
+       if (is_null($content)){
+            $content = (object)[];
+        }
         $url =  $this->baseURL . $path;
         $req = new Request('POST', $url);
         $this->__prepare_request($req, $content, $options);
