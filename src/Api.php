@@ -228,7 +228,10 @@ class Api {
      * @return array
      * @throws Exception
      */
-    public function post($path, $content = null, array $options = array()) {
+    public function post($path, $content = [], array $options = []) {
+        if (empty($content)){
+            $content = (object)[];
+        }
         $url =  $this->baseURL . $path;
         $req = new Request('POST', $url);
         $this->__prepare_request($req, $content, $options);
