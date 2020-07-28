@@ -125,7 +125,7 @@ namespace Yper\SDK\Service {
          * @return mixed
          */
         public function post_cancel_delivery($delivery_id) {
-            return $this->post("/pro/" . $this->pro_id . "/mission/" . $delivery_id . "/cancel");
+            return $this->post("/pro/" . $this->pro_id . "/mission/" . $delivery_id . "/cancel", (object)[]);
         }
     }
 }
