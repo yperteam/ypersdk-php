@@ -228,8 +228,8 @@ class Api {
      * @return array
      * @throws Exception
      */
-    public function post($path, $content = null, array $options = array()) {
-       if (is_null($content)){
+    public function post($path, $content = [], array $options = []) {
+        if (empty($content)){
             $content = (object)[];
         }
         $url =  $this->baseURL . $path;
