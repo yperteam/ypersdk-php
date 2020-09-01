@@ -28,3 +28,7 @@ New exception `AuthException` inheriting from `YperException` to distinguish 403
 
 - Add `upload()` method to upload files based on POST Request
 - Serialize `headers` during building Request
+
+## 4.3.0
+
+- Add `sameArraykey` argument to the QueryHelper to repeat key as long he has values or convert list values as a unique key value pair
