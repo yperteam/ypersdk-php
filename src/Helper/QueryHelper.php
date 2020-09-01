@@ -39,7 +39,7 @@ class QueryHelper
                 if ($uniqueArrayKey){
                     $namedParameters[$name] = implode(",", $value);
                 } else {
-                    # If currenttly analyzed option is not associative, its because
+                    # If currently analyzed option is not associative, its because
                     # we have a parameter as a list of distinct values
                     # requiring a spetial encoding :
                     # https://stackoverflow.com/questions/6243051/how-to-pass-an-array-within-a-query-string
