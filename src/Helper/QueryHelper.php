@@ -21,8 +21,9 @@ class QueryHelper
     /**
      * get the encoded url
      * @param array $args
+     * @param bool $uniqueArrayKey
      */
-    function __construct($args)
+    function __construct($args, bool $uniqueArrayKey = false)
     {
         $namedParameters = array();
         $listParameters = array();
@@ -35,12 +36,16 @@ class QueryHelper
                 $value = $value ? "true" : "false";
                 $namedParameters[$name] = $value;
             } else if (is_array($value) && !$this->isAssoc($value)) {
-                # If currenttly analyzed option is not associative, its because
-                # we have a parameter as a list of distinct values
-                # requiring a spetial encoding :
-                # https://stackoverflow.com/questions/6243051/how-to-pass-an-array-within-a-query-string
-                foreach ($value as $key => $item) {
-                    array_push($listParameters, $name.'='.urlencode($item));
+                if ($uniqueArrayKey){
+                    $namedParameters[$name] = implode(",", $value);
+                } else {
+                    # If currently analyzed option is not associative, its because
+                    # we have a parameter as a list of distinct values
+                    # requiring a special encoding :
+                    # https://stackoverflow.com/questions/6243051/how-to-pass-an-array-within-a-query-string
+                    foreach ($value as $key => $item) {
+                        array_push($listParameters, $name.'='.urlencode($item));
+                    }
                 }
             } else {
                 $namedParameters[$name] = $value;
