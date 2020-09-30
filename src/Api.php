@@ -245,6 +245,31 @@ class Api {
     }
 
     /**
+     * PATCH requests
+     *
+     * @param string $path path ask inside api
+     * @param array $content content to send inside body of request
+     * @param array $options Associative of options for this request
+     * @return array
+     * @throws Exception
+     */
+    public function patch(string $path, $content = [], array $options = []) {
+        if (empty($content)){
+            $content = (object)[];
+        }
+        $url =  $this->baseURL . $path;
+        $req = new Request('PATCH', $url);
+        $this->__prepare_request($req, $content, $options);
+        $response = $req->execute();
+
+        if ($response->isSuccess()) {
+            return $response->getResponse();
+        } else {
+            $response->getErrorAsException();
+        }
+    }
+
+    /**
      * PUT requests
      *
      * @param string $path path ask inside api
