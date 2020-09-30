@@ -83,6 +83,11 @@ class Request {
             $this->curl_options[CURLOPT_POSTFIELDS] = json_encode($this->body);
         }
 
+        if ($this->method == 'PATCH') {
+            $this->curl_options[CURLOPT_CUSTOMREQUEST] = 'PATCH';
+            $this->curl_options[CURLOPT_POSTFIELDS] = json_encode($this->body);
+        }
+
         if ($this->method == 'DELETE') {
             $this->curl_options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
         }
