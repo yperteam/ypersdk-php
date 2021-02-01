@@ -90,6 +90,7 @@ class Request {
 
         if ($this->method == 'DELETE') {
             $this->curl_options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+            $this->curl_options[CURLOPT_POSTFIELDS] = json_encode($this->body);
         }
     }
 
