@@ -28,6 +28,6 @@
   },
   "require-dev": {
     "overtrue/phplint": "^1.1",
-    "phpunit/phpunit": "^7.5.20"
+    "phpunit/phpunit": "^8.5.16"
   }
 }
