@@ -188,6 +188,7 @@ class Api {
 
         $request->addHeader('Authorization', "Bearer " . $this->accessToken);
         $request->addHeader('X-Request-Timestamp', time());
+        $request->addHeader('X-Forwarded-For', $request->getClientIp());
         $request->setBody($content);
 
         if (isset($options['headers']) && is_array($options['headers'])) {
