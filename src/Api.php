@@ -184,9 +184,9 @@ class Api {
 
         if ($request->authenticationNeeded()) {
             $this->__authenticate_request();
+            $request->addHeader('Authorization', "Bearer " . $this->accessToken);
         }
 
-        $request->addHeader('Authorization', "Bearer " . $this->accessToken);
         $request->addHeader('X-Request-Timestamp', time());
         $request->addHeader('X-Forwarded-For', $_SERVER['REMOTE_ADDR']);
         $request->setBody($content);
