@@ -16,7 +16,6 @@ class YperException extends Exception {
      * @param int $status HTTP status code (for requests)
      */
     public function __construct($code, $message, $status=null) {
-
         $this->yper_code = $code;
         $this->yper_message = $message;
         $this->status = $status;
