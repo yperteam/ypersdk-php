@@ -35,4 +35,12 @@ class YperException extends Exception {
         return $this->status;
     }
 
+    public function getFullError() {
+        return [
+            "code" => $this->yper_code,
+            "message" => $this->yper_message,
+            "status" => $this->status
+        ];
+    }
+
 }
